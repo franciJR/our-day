@@ -737,26 +737,28 @@ html {
         display: flex;
         flex-direction: column;
         overflow: visible;
+        position: relative;
     }
     
     .hero-image-wrapper {
         height: 60vh;
         min-height: 400px;
         position: relative;
-        overflow: visible;
+        overflow: hidden;
         flex-shrink: 0;
-        padding-bottom: 450px; /* Space for content below image */
+        order: 1;
     }
     
     .hero-image-overlay {
         display: none;
     }
     
+    /* Move content outside wrapper on mobile */
     .hero-image-content {
-        position: absolute !important;
-        top: 100% !important;
-        left: 0 !important;
-        right: 0 !important;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
         transform: none !important;
         background: var(--ivory-light);
         color: var(--dark-grey);
@@ -767,12 +769,7 @@ html {
         z-index: 10 !important;
         display: block !important;
         visibility: visible !important;
-    }
-    
-    /* Adjust hero banner to accommodate content below image */
-    .hero-image-banner {
-        overflow: visible;
-        min-height: auto;
+        order: 2;
     }
     
     /* Make hero content visible on mobile by default */
