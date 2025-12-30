@@ -57,6 +57,21 @@ img {
     position: relative;
 }
 
+.hero-initials {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #6B4423;
+    letter-spacing: 6px;
+    z-index: 1001;
+    opacity: 0;
+    animation: heroImageFadeIn 2s ease-out forwards;
+    pointer-events: none;
+}
+
 .nav-links {
     display: flex;
     gap: 3rem;
@@ -131,25 +146,6 @@ img {
     height: 100vh;
     position: relative;
     overflow: hidden;
-}
-
-.hero-initials {
-    position: fixed;
-    top: 80px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3.5rem;
-    font-weight: 600;
-    color: #6B4423;
-    letter-spacing: 6px;
-    text-shadow: 1px 1px 10px rgba(255, 255, 255, 0.6);
-    z-index: 100;
-    opacity: 0;
-    animation: heroImageFadeIn 2s ease-out forwards;
-    background: var(--ivory-light);
-    padding: 15px 40px;
-    border-radius: 8px;
 }
 
 .hero-image-wrapper {
@@ -908,10 +904,8 @@ html {
     }
     
     .hero-initials {
-        top: 70px;
-        font-size: 2.5rem;
+        font-size: 2rem;
         letter-spacing: 4px;
-        padding: 12px 30px;
     }
     
     .hero-image-wrapper {
@@ -1217,10 +1211,8 @@ html {
     }
     
     .hero-initials {
-        top: 60px;
-        font-size: 2rem;
+        font-size: 1.8rem;
         letter-spacing: 3px;
-        padding: 10px 25px;
     }
     
     .hero-image-wrapper {
