@@ -42,9 +42,10 @@ function updateActiveNav() {
 window.addEventListener('scroll', updateActiveNav);
 
 // Enhanced fade in animation on scroll with staggered effect
+// Only show content when in center viewport (30% from top and bottom)
 const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px' // Reduced margin for better mobile responsiveness
+    threshold: 0.3,
+    rootMargin: '-30% 0px -30% 0px' // Hide content when not in center 40% of viewport
 };
 
 const photoObserver = new IntersectionObserver((entries) => {
@@ -56,7 +57,7 @@ const photoObserver = new IntersectionObserver((entries) => {
                 entry.target.style.transform = 'translateY(0) scale(1)';
             }, index * 150); // 150ms delay between each photo
         } else {
-            // Fade out when leaving viewport
+            // Fade out when leaving center viewport
             entry.target.style.opacity = '0';
             entry.target.style.transform = 'translateY(50px) scale(0.9)';
         }
@@ -69,7 +70,7 @@ const timelineObserver = new IntersectionObserver((entries) => {
             entry.target.style.opacity = '1';
             entry.target.style.transform = 'translateY(0)';
         } else {
-            // Fade out when leaving viewport
+            // Fade out when leaving center viewport
             entry.target.style.opacity = '0';
             entry.target.style.transform = 'translateY(30px)';
         }
@@ -84,7 +85,7 @@ const ceremonyObserver = new IntersectionObserver((entries) => {
                 entry.target.classList.add('animate');
             }, index * 200); // 200ms delay between each ceremony
         } else {
-            // Fade out when leaving viewport
+            // Fade out when leaving center viewport
             entry.target.classList.remove('animate');
         }
     });
@@ -114,6 +115,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const ceremonyItems = document.querySelectorAll('.ceremony-item');
     ceremonyItems.forEach(el => {
         ceremonyObserver.observe(el);
+    });
+    
+    // Artistic photos - make clickable and add scroll animations
+    const artisticPhotos = document.querySelectorAll('.artistic-photo');
+    const artisticPhotoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = entry.target.style.transform || 'scale(1)';
+            } else {
+                entry.target.style.opacity = '0.7';
+                entry.target.style.transform = 'scale(0.95)';
+            }
+        });
+    }, {
+        threshold: 0.3,
+        rootMargin: '-30% 0px -30% 0px' // Only show when in center viewport
+    });
+    
+    artisticPhotos.forEach(photo => {
+        artisticPhotoObserver.observe(photo);
+        
+        // Make photos clickable to open in modal
+        photo.addEventListener('click', function() {
+            const img = this.querySelector('img');
+            if (img) {
+                modal.style.display = 'flex';
+                modalImg.src = img.src;
+                modalImg.alt = img.alt;
+                modalCaption.textContent = '';
+                
+                setTimeout(() => {
+                    modal.classList.add('active');
+                }, 10);
+                
+                document.body.style.overflow = 'hidden';
+            }
+        });
     });
 });
 
@@ -270,22 +309,32 @@ function showPhotoOnSide(side) {
 function showPhoto(photo, side) {
     if (activePhotos.includes(photo)) return;
     
-    // Set position based on side
-    if (side === 'left') {
-        photo.style.left = '5%';
+    // Check if mobile screen (width <= 768px)
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+        // Center photos on mobile
+        photo.style.left = '50%';
         photo.style.right = 'auto';
-        photo.classList.add('left');
-        photo.classList.remove('right');
+        photo.classList.add('left', 'right'); // Add both for CSS targeting
     } else {
-        photo.style.right = '5%';
-        photo.style.left = 'auto';
-        photo.classList.add('right');
-        photo.classList.remove('left');
+        // Set position based on side for desktop
+        if (side === 'left') {
+            photo.style.left = '5%';
+            photo.style.right = 'auto';
+            photo.classList.add('left');
+            photo.classList.remove('right');
+        } else {
+            photo.style.right = '5%';
+            photo.style.left = 'auto';
+            photo.classList.add('right');
+            photo.classList.remove('left');
+        }
     }
     
     // Adjusted vertical position to keep photos within visible bounds (5% to 75%)
-    // Also check existing photos on same side to avoid overlap
-    const photosOnSide = activePhotos.filter(p => 
+    // On mobile, check all active photos to avoid overlap
+    const photosToCheck = isMobile ? activePhotos : activePhotos.filter(p => 
         (side === 'left' && p.classList.contains('left')) ||
         (side === 'right' && p.classList.contains('right'))
     );
@@ -295,23 +344,23 @@ function showPhoto(photo, side) {
     do {
         topPosition = Math.random() * 70 + 5; // 5% to 75%
         attempts++;
-    } while (attempts < 20 && photosOnSide.some(p => {
+    } while (attempts < 20 && photosToCheck.some(p => {
         const existingTop = parseFloat(p.style.top);
-        return Math.abs(existingTop - topPosition) < 20; // At least 20% apart
+        return Math.abs(existingTop - topPosition) < (isMobile ? 15 : 20); // Closer spacing on mobile
     }));
     
     photo.style.top = `${topPosition}%`;
     
     // Random rotation
     const rotation = (Math.random() - 0.5) * 15;
-    photo.style.transform = `scale(0) rotate(${rotation}deg)`;
+    photo.style.transform = isMobile ? `scale(0) translateX(-50%) rotate(${rotation}deg)` : `scale(0) rotate(${rotation}deg)`;
     
     activePhotos.push(photo);
     photo.classList.add('visible', 'floating');
     
     // Update transform with rotation
     setTimeout(() => {
-        photo.style.transform = `scale(1) rotate(${rotation}deg)`;
+        photo.style.transform = isMobile ? `scale(1) translateX(-50%) rotate(${rotation}deg)` : `scale(1) rotate(${rotation}deg)`;
     }, 10);
     
     // Set timer to hide this photo after 4 seconds and show a new one
@@ -417,29 +466,30 @@ function animateHeroContent() {
     // Trigger reflow to reset animation
     void heroTitle?.offsetHeight;
     
-    // Add animate class with staggered timing
+    // Add animate class with staggered timing (slower for smoother effect)
     if (heroTitle) {
-        setTimeout(() => heroTitle.classList.add('animate'), 200);
+        setTimeout(() => heroTitle.classList.add('animate'), 300);
     }
     if (heroNames) {
-        setTimeout(() => heroNames.classList.add('animate'), 400);
+        setTimeout(() => heroNames.classList.add('animate'), 600);
     }
     if (heroDate) {
-        setTimeout(() => heroDate.classList.add('animate'), 600);
+        setTimeout(() => heroDate.classList.add('animate'), 900);
     }
     if (heroSubtitle) {
-        setTimeout(() => heroSubtitle.classList.add('animate'), 800);
+        setTimeout(() => heroSubtitle.classList.add('animate'), 1200);
     }
 }
 
 // Intersection Observer for hero content (triggers on scroll in both directions)
+// Only show when in center viewport
 const heroContentObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            // Trigger animation when element comes into view
+            // Trigger animation when element comes into center viewport
             animateHeroContent();
         } else {
-            // Fade out hero content when leaving viewport
+            // Fade out hero content when leaving center viewport
             const heroTitle = document.querySelector('.hero-image-content .hero-title');
             const heroNames = document.querySelector('.hero-image-content .hero-names');
             const heroDate = document.querySelector('.hero-image-content .hero-date');
@@ -451,8 +501,8 @@ const heroContentObserver = new IntersectionObserver((entries) => {
         }
     });
 }, {
-    threshold: 0.2, // Trigger when 20% of the element is visible
-    rootMargin: '0px'
+    threshold: 0.3, // Trigger when 30% of the element is visible in center
+    rootMargin: '-30% 0px -30% 0px' // Only show when in center 40% of viewport
 });
 
 // Initialize everything when DOM is ready
