@@ -117,26 +117,46 @@ document.addEventListener('DOMContentLoaded', () => {
         ceremonyObserver.observe(el);
     });
     
-    // Artistic photos - make clickable and add scroll animations
+    // Artistic photos - smooth animations and clickable
     const artisticPhotos = document.querySelectorAll('.artistic-photo');
+    
+    // Animate photos with staggered effect
+    function animateArtisticPhotos() {
+        artisticPhotos.forEach((photo, index) => {
+            photo.classList.remove('animate');
+            // Trigger reflow
+            void photo.offsetHeight;
+            // Add animate class with staggered timing
+            setTimeout(() => {
+                photo.classList.add('animate');
+            }, index * 300);
+        });
+    }
+    
     const artisticPhotoObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = entry.target.style.transform || 'scale(1)';
+                // Animate when section comes into view
+                animateArtisticPhotos();
             } else {
-                entry.target.style.opacity = '0.7';
-                entry.target.style.transform = 'scale(0.95)';
+                // Fade out when leaving center viewport
+                artisticPhotos.forEach(photo => {
+                    photo.classList.remove('animate');
+                });
             }
         });
     }, {
-        threshold: 0.3,
+        threshold: 0.2,
         rootMargin: '-30% 0px -30% 0px' // Only show when in center viewport
     });
     
+    // Observe the photos section
+    const artisticPhotosSection = document.querySelector('.artistic-photos-section');
+    if (artisticPhotosSection) {
+        artisticPhotoObserver.observe(artisticPhotosSection);
+    }
+    
     artisticPhotos.forEach(photo => {
-        artisticPhotoObserver.observe(photo);
-        
         // Make photos clickable to open in modal
         photo.addEventListener('click', function() {
             const img = this.querySelector('img');
@@ -288,14 +308,21 @@ function createFloatingPhotos() {
 function showPhotoOnSide(side) {
     if (floatingPhotoElements.length === 0) return;
     
-    // Count how many photos are currently on this side
-    const photosOnSide = activePhotos.filter(p => 
-        (side === 'left' && p.classList.contains('left')) ||
-        (side === 'right' && p.classList.contains('right'))
-    );
+    // Check if mobile - on mobile, show photos randomly across the space
+    const isMobile = window.innerWidth <= 768;
     
-    // Allow up to 3 photos per side
-    if (photosOnSide.length >= 3) return;
+    if (isMobile) {
+        // On mobile, allow up to 4 photos total, randomly positioned
+        if (activePhotos.length >= 4) return;
+    } else {
+        // On desktop, count photos on each side
+        const photosOnSide = activePhotos.filter(p => 
+            (side === 'left' && p.classList.contains('left')) ||
+            (side === 'right' && p.classList.contains('right'))
+        );
+        // Allow up to 3 photos per side
+        if (photosOnSide.length >= 3) return;
+    }
     
     // Find a photo that's not currently visible
     const availablePhotos = floatingPhotoElements.filter(photo => !activePhotos.includes(photo));
@@ -312,13 +339,40 @@ function showPhoto(photo, side) {
     // Check if mobile screen (width <= 768px)
     const isMobile = window.innerWidth <= 768;
     
+    let leftPosition, topPosition;
+    let attempts = 0;
+    let validPosition = false;
+    
+    // On mobile, position randomly across the entire space (collage style)
     if (isMobile) {
-        // Center photos on mobile
-        photo.style.left = '50%';
+        do {
+            // Random horizontal position (10% to 90% to avoid edges)
+            leftPosition = Math.random() * 80 + 10;
+            // Random vertical position (10% to 80% to avoid bottom)
+            topPosition = Math.random() * 70 + 10;
+            
+            // Check if this position overlaps with existing photos
+            validPosition = !activePhotos.some(p => {
+                const existingLeft = parseFloat(p.style.left);
+                const existingTop = parseFloat(p.style.top);
+                const distance = Math.sqrt(
+                    Math.pow(existingLeft - leftPosition, 2) + 
+                    Math.pow(existingTop - topPosition, 2)
+                );
+                return distance < 25; // At least 25% apart
+            });
+            
+            attempts++;
+        } while (!validPosition && attempts < 30);
+        
+        if (!validPosition) return; // Couldn't find a valid position
+        
+        photo.style.left = `${leftPosition}%`;
         photo.style.right = 'auto';
-        photo.classList.add('left', 'right'); // Add both for CSS targeting
+        photo.style.top = `${topPosition}%`;
+        photo.classList.add('left', 'right', 'mobile-random');
     } else {
-        // Set position based on side for desktop
+        // Desktop: Set position based on side
         if (side === 'left') {
             photo.style.left = '5%';
             photo.style.right = 'auto';
@@ -330,37 +384,38 @@ function showPhoto(photo, side) {
             photo.classList.add('right');
             photo.classList.remove('left');
         }
+        
+        // Vertical position for desktop
+        const photosToCheck = activePhotos.filter(p => 
+            (side === 'left' && p.classList.contains('left')) ||
+            (side === 'right' && p.classList.contains('right'))
+        );
+        
+        do {
+            topPosition = Math.random() * 70 + 5; // 5% to 75%
+            attempts++;
+        } while (attempts < 20 && photosToCheck.some(p => {
+            const existingTop = parseFloat(p.style.top);
+            return Math.abs(existingTop - topPosition) < 20;
+        }));
+        
+        photo.style.top = `${topPosition}%`;
     }
     
-    // Adjusted vertical position to keep photos within visible bounds (5% to 75%)
-    // On mobile, check all active photos to avoid overlap
-    const photosToCheck = isMobile ? activePhotos : activePhotos.filter(p => 
-        (side === 'left' && p.classList.contains('left')) ||
-        (side === 'right' && p.classList.contains('right'))
-    );
-    
-    let topPosition;
-    let attempts = 0;
-    do {
-        topPosition = Math.random() * 70 + 5; // 5% to 75%
-        attempts++;
-    } while (attempts < 20 && photosToCheck.some(p => {
-        const existingTop = parseFloat(p.style.top);
-        return Math.abs(existingTop - topPosition) < (isMobile ? 15 : 20); // Closer spacing on mobile
-    }));
-    
-    photo.style.top = `${topPosition}%`;
-    
     // Random rotation
-    const rotation = (Math.random() - 0.5) * 15;
-    photo.style.transform = isMobile ? `scale(0) translateX(-50%) rotate(${rotation}deg)` : `scale(0) rotate(${rotation}deg)`;
+    const rotation = (Math.random() - 0.5) * 20; // Increased rotation range
+    photo.style.transform = isMobile ? 
+        `scale(0) translateX(-50%) rotate(${rotation}deg)` : 
+        `scale(0) rotate(${rotation}deg)`;
     
     activePhotos.push(photo);
     photo.classList.add('visible', 'floating');
     
     // Update transform with rotation
     setTimeout(() => {
-        photo.style.transform = isMobile ? `scale(1) translateX(-50%) rotate(${rotation}deg)` : `scale(1) rotate(${rotation}deg)`;
+        photo.style.transform = isMobile ? 
+            `scale(1) translateX(-50%) rotate(${rotation}deg)` : 
+            `scale(1) rotate(${rotation}deg)`;
     }, 10);
     
     // Set timer to hide this photo after 4 seconds and show a new one
@@ -468,16 +523,16 @@ function animateHeroContent() {
     
     // Add animate class with staggered timing (slower for smoother effect)
     if (heroTitle) {
-        setTimeout(() => heroTitle.classList.add('animate'), 300);
+        setTimeout(() => heroTitle.classList.add('animate'), 400);
     }
     if (heroNames) {
-        setTimeout(() => heroNames.classList.add('animate'), 600);
+        setTimeout(() => heroNames.classList.add('animate'), 800);
     }
     if (heroDate) {
-        setTimeout(() => heroDate.classList.add('animate'), 900);
+        setTimeout(() => heroDate.classList.add('animate'), 1200);
     }
     if (heroSubtitle) {
-        setTimeout(() => heroSubtitle.classList.add('animate'), 1200);
+        setTimeout(() => heroSubtitle.classList.add('animate'), 1600);
     }
 }
 
@@ -511,10 +566,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const heroContent = document.querySelector('.hero-image-content');
     if (heroContent) {
         heroContentObserver.observe(heroContent);
-        // Animate on initial page load (after a short delay to ensure page is ready)
+        // Animate hero content after hero image fades in (2s delay for image fade-in)
         setTimeout(() => {
             animateHeroContent();
-        }, 300);
+        }, 2200); // Wait for image fade-in (2s) + small buffer (200ms)
     }
     
     // Initialize floating photos
