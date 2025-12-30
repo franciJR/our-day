@@ -761,6 +761,15 @@ html {
         margin-top: 0;
     }
     
+    /* Make hero content visible on mobile by default */
+    .hero-image-content .hero-title,
+    .hero-image-content .hero-names,
+    .hero-image-content .hero-date,
+    .hero-image-content .hero-subtitle {
+        opacity: 1 !important;
+        transform: translateY(0) scale(1) !important;
+    }
+    
     .hero-image-content .hero-title {
         font-size: 2.5rem;
         margin-bottom: 1.5rem;
@@ -844,14 +853,47 @@ html {
         font-size: 0.95rem;
     }
     
-    /* Hide floating photos on tablet and mobile */
+    /* Show floating photos on mobile with adjusted styling */
     .floating-photos-container {
-        display: none;
+        display: block !important;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-height: 400px;
+    }
+    
+    .floating-photo {
+        width: 80px !important;
+        height: 80px !important;
+        max-width: 80px !important;
+        max-height: 80px !important;
+        z-index: 2;
+    }
+    
+    .floating-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .floating-photo.left {
+        left: 2% !important;
+        right: auto !important;
+    }
+    
+    .floating-photo.right {
+        right: 2% !important;
+        left: auto !important;
     }
     
     /* Story Section */
     .story-section {
         padding: 4rem 0;
+    }
+    
+    .story-content {
+        position: relative;
+        min-height: 600px;
     }
     
     .story-timeline::before {
@@ -941,6 +983,15 @@ html {
     
     .hero-image-content {
         padding: 2.5rem 1.5rem;
+    }
+    
+    /* Ensure hero content is visible on small mobile */
+    .hero-image-content .hero-title,
+    .hero-image-content .hero-names,
+    .hero-image-content .hero-date,
+    .hero-image-content .hero-subtitle {
+        opacity: 1 !important;
+        transform: translateY(0) scale(1) !important;
     }
     
     .hero-image-content .hero-title {
@@ -1033,6 +1084,20 @@ html {
     
     .story-content {
         margin-top: 2rem;
+        position: relative;
+        min-height: 500px;
+    }
+    
+    /* Ensure floating photos are visible on small mobile */
+    .floating-photos-container {
+        display: block !important;
+    }
+    
+    .floating-photo {
+        width: 70px !important;
+        height: 70px !important;
+        max-width: 70px !important;
+        max-height: 70px !important;
     }
     
     .timeline-content {
