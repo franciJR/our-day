@@ -398,24 +398,51 @@ function animateHeroContent() {
     const heroDate = document.querySelector('.hero-image-content .hero-date');
     const heroSubtitle = document.querySelector('.hero-image-content .hero-subtitle');
     
+    // Remove animate class first to reset animation
+    [heroTitle, heroNames, heroDate, heroSubtitle].forEach(el => {
+        if (el) el.classList.remove('animate');
+    });
+    
+    // Trigger reflow to reset animation
+    void heroTitle?.offsetHeight;
+    
+    // Add animate class with staggered timing
     if (heroTitle) {
-        setTimeout(() => heroTitle.classList.add('animate'), 300);
+        setTimeout(() => heroTitle.classList.add('animate'), 200);
     }
     if (heroNames) {
-        setTimeout(() => heroNames.classList.add('animate'), 600);
+        setTimeout(() => heroNames.classList.add('animate'), 400);
     }
     if (heroDate) {
-        setTimeout(() => heroDate.classList.add('animate'), 900);
+        setTimeout(() => heroDate.classList.add('animate'), 600);
     }
     if (heroSubtitle) {
-        setTimeout(() => heroSubtitle.classList.add('animate'), 1200);
+        setTimeout(() => heroSubtitle.classList.add('animate'), 800);
     }
 }
 
+// Intersection Observer for hero content (triggers on scroll in both directions)
+const heroContentObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Trigger animation when element comes into view
+            animateHeroContent();
+        }
+    });
+}, {
+    threshold: 0.2, // Trigger when 20% of the element is visible
+    rootMargin: '0px'
+});
+
 // Initialize everything when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    // Animate hero content on page load
-    animateHeroContent();
+    // Set up observer for hero content
+    const heroContent = document.querySelector('.hero-image-content');
+    if (heroContent) {
+        heroContentObserver.observe(heroContent);
+        // Also animate on initial load
+        animateHeroContent();
+    }
     
     // Initialize floating photos
     createFloatingPhotos();
