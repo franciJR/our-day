@@ -742,9 +742,19 @@ html {
     .hero-image-wrapper {
         height: 60vh;
         min-height: 400px;
-        position: relative;
+        position: relative !important;
         overflow: hidden;
         width: 100%;
+        display: block !important;
+    }
+    
+    .hero-main-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        display: block !important;
+        visibility: visible !important;
     }
     
     .hero-image-overlay {
@@ -771,11 +781,21 @@ html {
         visibility: visible !important;
     }
     
-    /* Make hero content visible on mobile by default */
+    /* Allow animations on mobile but ensure visibility */
     .hero-image-content .hero-title,
     .hero-image-content .hero-names,
     .hero-image-content .hero-date,
     .hero-image-content .hero-subtitle {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+        transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), 
+                    transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .hero-image-content .hero-title.animate,
+    .hero-image-content .hero-names.animate,
+    .hero-image-content .hero-date.animate,
+    .hero-image-content .hero-subtitle.animate {
         opacity: 1 !important;
         transform: translateY(0) scale(1) !important;
     }
@@ -989,9 +1009,19 @@ html {
     .hero-image-wrapper {
         height: 50vh;
         min-height: 350px;
-        position: relative;
+        position: relative !important;
         overflow: hidden;
         width: 100%;
+        display: block !important;
+    }
+    
+    .hero-main-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        display: block !important;
+        visibility: visible !important;
     }
     
     .hero-image-content {
@@ -1009,11 +1039,21 @@ html {
         width: 100%;
     }
     
-    /* Ensure hero content is visible on small mobile */
+    /* Allow animations on small mobile too */
     .hero-image-content .hero-title,
     .hero-image-content .hero-names,
     .hero-image-content .hero-date,
     .hero-image-content .hero-subtitle {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+        transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), 
+                    transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .hero-image-content .hero-title.animate,
+    .hero-image-content .hero-names.animate,
+    .hero-image-content .hero-date.animate,
+    .hero-image-content .hero-subtitle.animate {
         opacity: 1 !important;
         transform: translateY(0) scale(1) !important;
     }
