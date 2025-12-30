@@ -44,7 +44,7 @@ window.addEventListener('scroll', updateActiveNav);
 // Enhanced fade in animation on scroll with staggered effect
 const observerOptions = {
     threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
+    rootMargin: '0px 0px -50px 0px' // Reduced margin for better mobile responsiveness
 };
 
 const photoObserver = new IntersectionObserver((entries) => {
@@ -55,6 +55,10 @@ const photoObserver = new IntersectionObserver((entries) => {
                 entry.target.style.opacity = '1';
                 entry.target.style.transform = 'translateY(0) scale(1)';
             }, index * 150); // 150ms delay between each photo
+        } else {
+            // Fade out when leaving viewport
+            entry.target.style.opacity = '0';
+            entry.target.style.transform = 'translateY(50px) scale(0.9)';
         }
     });
 }, observerOptions);
@@ -64,6 +68,10 @@ const timelineObserver = new IntersectionObserver((entries) => {
         if (entry.isIntersecting) {
             entry.target.style.opacity = '1';
             entry.target.style.transform = 'translateY(0)';
+        } else {
+            // Fade out when leaving viewport
+            entry.target.style.opacity = '0';
+            entry.target.style.transform = 'translateY(30px)';
         }
     });
 }, observerOptions);
@@ -75,6 +83,9 @@ const ceremonyObserver = new IntersectionObserver((entries) => {
             setTimeout(() => {
                 entry.target.classList.add('animate');
             }, index * 200); // 200ms delay between each ceremony
+        } else {
+            // Fade out when leaving viewport
+            entry.target.classList.remove('animate');
         }
     });
 }, observerOptions);
@@ -86,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     photoItems.forEach((el, index) => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(50px) scale(0.9)';
-        el.style.transition = 'opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1)';
+        el.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
         photoObserver.observe(el);
     });
     
@@ -95,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     timelineItems.forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
+        el.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
         timelineObserver.observe(el);
     });
     
@@ -427,6 +438,16 @@ const heroContentObserver = new IntersectionObserver((entries) => {
         if (entry.isIntersecting) {
             // Trigger animation when element comes into view
             animateHeroContent();
+        } else {
+            // Fade out hero content when leaving viewport
+            const heroTitle = document.querySelector('.hero-image-content .hero-title');
+            const heroNames = document.querySelector('.hero-image-content .hero-names');
+            const heroDate = document.querySelector('.hero-image-content .hero-date');
+            const heroSubtitle = document.querySelector('.hero-image-content .hero-subtitle');
+            
+            [heroTitle, heroNames, heroDate, heroSubtitle].forEach(el => {
+                if (el) el.classList.remove('animate');
+            });
         }
     });
 }, {
@@ -440,8 +461,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const heroContent = document.querySelector('.hero-image-content');
     if (heroContent) {
         heroContentObserver.observe(heroContent);
-        // Also animate on initial load
-        animateHeroContent();
+        // Animate on initial page load (after a short delay to ensure page is ready)
+        setTimeout(() => {
+            animateHeroContent();
+        }, 300);
     }
     
     // Initialize floating photos
