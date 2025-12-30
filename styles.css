@@ -736,12 +736,16 @@ html {
         min-height: auto;
         display: flex;
         flex-direction: column;
+        overflow: visible;
     }
     
     .hero-image-wrapper {
         height: 60vh;
         min-height: 400px;
         position: relative;
+        overflow: visible;
+        flex-shrink: 0;
+        padding-bottom: 450px; /* Space for content below image */
     }
     
     .hero-image-overlay {
@@ -749,16 +753,26 @@ html {
     }
     
     .hero-image-content {
-        position: relative;
-        top: auto;
-        left: auto;
-        transform: none;
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+        transform: none !important;
         background: var(--ivory-light);
         color: var(--dark-grey);
         padding: 3rem 2rem;
         width: 100%;
         max-width: 100%;
         margin-top: 0;
+        z-index: 10 !important;
+        display: block !important;
+        visibility: visible !important;
+    }
+    
+    /* Adjust hero banner to accommodate content below image */
+    .hero-image-banner {
+        overflow: visible;
+        min-height: auto;
     }
     
     /* Make hero content visible on mobile by default */
@@ -979,10 +993,20 @@ html {
     .hero-image-wrapper {
         height: 50vh;
         min-height: 350px;
+        overflow: visible;
+        padding-bottom: 400px; /* Space for content below image */
     }
     
     .hero-image-content {
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+        transform: none !important;
         padding: 2.5rem 1.5rem;
+        display: block !important;
+        visibility: visible !important;
+        z-index: 10 !important;
     }
     
     /* Ensure hero content is visible on small mobile */
