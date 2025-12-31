@@ -67,12 +67,10 @@ const photoObserver = new IntersectionObserver((entries) => {
 const timelineObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+            entry.target.classList.add('animate');
         } else {
             // Fade out when leaving center viewport
-            entry.target.style.opacity = '0';
-            entry.target.style.transform = 'translateY(30px)';
+            entry.target.classList.remove('animate');
         }
     });
 }, observerOptions);
