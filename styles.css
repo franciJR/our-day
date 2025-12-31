@@ -168,6 +168,14 @@ img {
     animation: heroImageFadeIn 2s ease-out forwards;
 }
 
+.hero-main-image-mobile {
+    display: none;
+}
+
+.hero-main-image-desktop {
+    display: block;
+}
+
 @keyframes heroImageFadeIn {
     from {
         opacity: 0;
@@ -924,12 +932,19 @@ html {
         z-index: 1;
     }
     
+    .hero-main-image-desktop {
+        display: none !important;
+    }
+    
+    .hero-main-image-mobile {
+        display: block !important;
+    }
+    
     .hero-main-image {
         width: 100% !important;
         height: 100% !important;
         object-fit: cover;
         object-position: center 40%;
-        display: block !important;
         visibility: visible !important;
         position: relative !important;
         top: 0 !important;
@@ -1233,12 +1248,19 @@ html {
         z-index: 1;
     }
     
+    .hero-main-image-desktop {
+        display: none !important;
+    }
+    
+    .hero-main-image-mobile {
+        display: block !important;
+    }
+    
     .hero-main-image {
         width: 100% !important;
         height: 100% !important;
         object-fit: cover;
         object-position: center 40%;
-        display: block !important;
         visibility: visible !important;
         position: relative !important;
         top: 0 !important;
