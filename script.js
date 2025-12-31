@@ -520,11 +520,12 @@ function animateHeroContent() {
     void heroNames?.offsetHeight;
     
     // Add animate class with staggered timing (slower for smoother effect)
+    // Increased delays for smoother fade-in when scrolling down
     if (heroNames) {
-        setTimeout(() => heroNames.classList.add('animate'), 400);
+        setTimeout(() => heroNames.classList.add('animate'), 600);
     }
     if (heroDate) {
-        setTimeout(() => heroDate.classList.add('animate'), 800);
+        setTimeout(() => heroDate.classList.add('animate'), 1200);
     }
 }
 
