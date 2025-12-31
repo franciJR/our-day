@@ -102,14 +102,11 @@ document.addEventListener('DOMContentLoaded', () => {
         photoObserver.observe(el);
     });
     
-    // Timeline animations
-    const timelineItems = document.querySelectorAll('.timeline-item');
-    timelineItems.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-        timelineObserver.observe(el);
-    });
+    // Love story text animation
+    const loveStoryText = document.querySelector('.love-story-text');
+    if (loveStoryText) {
+        timelineObserver.observe(loveStoryText);
+    }
     
     // Ceremony animations
     const ceremonyItems = document.querySelectorAll('.ceremony-item');
