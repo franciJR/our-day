@@ -196,7 +196,7 @@ img {
     position: relative;
     width: 90%;
     max-width: 800px;
-    margin: -100px auto 4rem auto;
+    margin: 3rem auto 4rem auto;
     background: #6B4423;
     padding: 3rem 4rem;
     text-align: center;
@@ -284,11 +284,12 @@ img {
 }
 
 .hero-image-content .hero-date {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     color: var(--dark-grey);
     letter-spacing: 3px;
     margin: 2rem 0;
     font-weight: 300;
+    font-family: 'Cormorant Garamond', serif;
 }
 
 /* Container */
@@ -995,15 +996,16 @@ html {
     }
     
     .hero-image-content .hero-date {
-        font-size: 1.1rem;
+        font-size: 1.8rem;
         margin: 1.5rem 0;
         letter-spacing: 2px;
         color: var(--dark-grey);
         text-shadow: none;
+        font-family: 'Cormorant Garamond', serif;
     }
     
     .hero-invitation-box {
-        margin: -60px auto 3rem auto;
+        margin: 2rem auto 3rem auto;
         padding: 2rem 1.5rem;
         width: 95%;
     }
@@ -1015,6 +1017,10 @@ html {
     
     .hero-image-content {
         padding: 1rem 0 3rem 0;
+    }
+    
+    .hero-image-content .hero-date {
+        font-size: 1.8rem;
     }
     
     /* Sections */
@@ -1296,7 +1302,7 @@ html {
     }
     
     .hero-invitation-box {
-        margin: -70px auto 2rem auto;
+        margin: 1.5rem auto 2rem auto;
         padding: 1.5rem 1rem;
         width: 95%;
     }
@@ -1308,6 +1314,10 @@ html {
     
     .hero-image-content {
         padding: 1rem 0 2rem 0;
+    }
+    
+    .hero-image-content .hero-date {
+        font-size: 1.5rem;
     }
     
     /* Sections */
