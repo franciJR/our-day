@@ -240,16 +240,15 @@ img {
 .hero-image-content .hero-names,
 .hero-image-content .hero-date {
     opacity: 0;
-    transform: translateY(50px) scale(0.8);
-    transition: opacity 3s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
-                transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hero-image-content .hero-names.animate,
 .hero-image-content .hero-date.animate {
     opacity: 1;
-    transform: translateY(0) scale(1);
-    animation: popUp 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    transform: translateY(0);
 }
 
 @keyframes popUp {
@@ -977,20 +976,19 @@ html {
         visibility: visible !important;
     }
     
-    /* Allow animations on mobile with pop-up effect (slower and smoother) */
+    /* Hero content animations - same as ceremonies */
     .hero-image-content .hero-names,
     .hero-image-content .hero-date {
         opacity: 0;
-        transform: translateY(50px) scale(0.8);
-        transition: opacity 3s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
-                    transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        transform: translateY(40px);
+        transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .hero-image-content .hero-names.animate,
     .hero-image-content .hero-date.animate {
         opacity: 1 !important;
-        transform: translateY(0) scale(1) !important;
-        animation: popUp 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+        transform: translateY(0) !important;
     }
     
     .hero-image-content .hero-names {
@@ -1284,20 +1282,19 @@ html {
         width: 100%;
     }
     
-    /* Allow animations on small mobile with pop-up effect (slower and smoother) */
+    /* Hero content animations - same as ceremonies */
     .hero-image-content .hero-names,
     .hero-image-content .hero-date {
         opacity: 0;
-        transform: translateY(50px) scale(0.8);
-        transition: opacity 3s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
-                    transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        transform: translateY(40px);
+        transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .hero-image-content .hero-names.animate,
     .hero-image-content .hero-date.animate {
         opacity: 1 !important;
-        transform: translateY(0) scale(1) !important;
-        animation: popUp 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
+        transform: translateY(0) !important;
     }
     
     .hero-image-content .hero-names {

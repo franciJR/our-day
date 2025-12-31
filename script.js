@@ -507,60 +507,32 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Hero content animations
-function animateHeroContent() {
-    const heroNames = document.querySelector('.hero-image-content .hero-names');
-    const heroDate = document.querySelector('.hero-image-content .hero-date');
-    
-    // Remove animate class first to reset animation
-    [heroNames, heroDate].forEach(el => {
-        if (el) el.classList.remove('animate');
-    });
-    
-    // Trigger reflow to reset animation
-    void heroNames?.offsetHeight;
-    
-    // Add animate class with staggered timing (slower for smoother effect)
-    // Increased delays for smoother fade-in when scrolling down
-    if (heroNames) {
-        setTimeout(() => heroNames.classList.add('animate'), 600);
-    }
-    if (heroDate) {
-        setTimeout(() => heroDate.classList.add('animate'), 1200);
-    }
-}
-
-// Intersection Observer for hero content (triggers on scroll in both directions)
-// Only show when in center viewport
+// Hero content observer - same pattern as ceremonies
 const heroContentObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+    entries.forEach((entry, index) => {
         if (entry.isIntersecting) {
-            // Trigger animation when element comes into center viewport
-            animateHeroContent();
+            // Stagger the animation for hero names and date (same as ceremonies)
+            setTimeout(() => {
+                entry.target.classList.add('animate');
+            }, index * 200); // 200ms delay between each element (same as ceremonies)
         } else {
-            // Fade out hero content when leaving center viewport
-            const heroNames = document.querySelector('.hero-image-content .hero-names');
-            const heroDate = document.querySelector('.hero-image-content .hero-date');
-            
-            [heroNames, heroDate].forEach(el => {
-                if (el) el.classList.remove('animate');
-            });
+            // Fade out when leaving center viewport
+            entry.target.classList.remove('animate');
         }
     });
-}, {
-    threshold: 0.3, // Trigger when 30% of the element is visible in center
-    rootMargin: '-30% 0px -30% 0px' // Only show when in center 40% of viewport
-});
+}, observerOptions);
 
 // Initialize everything when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    // Set up observer for hero content
-    const heroContent = document.querySelector('.hero-image-content');
-    if (heroContent) {
-        heroContentObserver.observe(heroContent);
-        // Animate hero content after hero image fades in (2s delay for image fade-in)
-        setTimeout(() => {
-            animateHeroContent();
-        }, 2200); // Wait for image fade-in (2s) + small buffer (200ms)
+    // Set up observer for hero content (names and date) - same as ceremonies
+    const heroNames = document.querySelector('.hero-image-content .hero-names');
+    const heroDate = document.querySelector('.hero-image-content .hero-date');
+    
+    if (heroNames) {
+        heroContentObserver.observe(heroNames);
+    }
+    if (heroDate) {
+        heroContentObserver.observe(heroDate);
     }
     
     // Initialize floating photos
