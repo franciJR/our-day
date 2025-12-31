@@ -508,31 +508,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Hero content animations
 function animateHeroContent() {
-    const heroTitle = document.querySelector('.hero-image-content .hero-title');
     const heroNames = document.querySelector('.hero-image-content .hero-names');
     const heroDate = document.querySelector('.hero-image-content .hero-date');
-    const heroSubtitle = document.querySelector('.hero-image-content .hero-subtitle');
     
     // Remove animate class first to reset animation
-    [heroTitle, heroNames, heroDate, heroSubtitle].forEach(el => {
+    [heroNames, heroDate].forEach(el => {
         if (el) el.classList.remove('animate');
     });
     
     // Trigger reflow to reset animation
-    void heroTitle?.offsetHeight;
+    void heroNames?.offsetHeight;
     
     // Add animate class with staggered timing (slower for smoother effect)
-    if (heroTitle) {
-        setTimeout(() => heroTitle.classList.add('animate'), 400);
-    }
     if (heroNames) {
-        setTimeout(() => heroNames.classList.add('animate'), 800);
+        setTimeout(() => heroNames.classList.add('animate'), 400);
     }
     if (heroDate) {
-        setTimeout(() => heroDate.classList.add('animate'), 1200);
-    }
-    if (heroSubtitle) {
-        setTimeout(() => heroSubtitle.classList.add('animate'), 1600);
+        setTimeout(() => heroDate.classList.add('animate'), 800);
     }
 }
 
@@ -545,12 +537,10 @@ const heroContentObserver = new IntersectionObserver((entries) => {
             animateHeroContent();
         } else {
             // Fade out hero content when leaving center viewport
-            const heroTitle = document.querySelector('.hero-image-content .hero-title');
             const heroNames = document.querySelector('.hero-image-content .hero-names');
             const heroDate = document.querySelector('.hero-image-content .hero-date');
-            const heroSubtitle = document.querySelector('.hero-image-content .hero-subtitle');
             
-            [heroTitle, heroNames, heroDate, heroSubtitle].forEach(el => {
+            [heroNames, heroDate].forEach(el => {
                 if (el) el.classList.remove('animate');
             });
         }

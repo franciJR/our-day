@@ -143,17 +143,15 @@ img {
 /* Hero Image Banner */
 .hero-image-banner {
     width: 100%;
-    height: 100vh;
     position: relative;
     overflow: hidden;
 }
 
 .hero-image-wrapper {
     width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
+    height: 70vh;
+    min-height: 500px;
+    position: relative;
     z-index: 0;
 }
 
@@ -191,33 +189,53 @@ img {
     z-index: 1;
 }
 
-.hero-image-content {
-    position: absolute;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    z-index: 2;
-    color: var(--white);
+.hero-invitation-box {
+    position: relative;
     width: 90%;
     max-width: 800px;
+    margin: -80px auto 4rem auto;
+    background: #6B4423;
+    padding: 3rem 4rem;
+    text-align: center;
+    z-index: 3;
+    border: 2px solid var(--ivory-light);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    animation: heroImageFadeIn 2s ease-out forwards;
+}
+
+.hero-invitation-box .invitation-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    line-height: 1.8;
+    color: var(--ivory-light);
+    font-weight: 400;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.hero-image-content {
+    position: relative;
+    text-align: center;
+    z-index: 2;
+    color: var(--dark-grey);
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 0 4rem 0;
     padding: 2rem;
 }
 
-.hero-image-content .hero-title,
 .hero-image-content .hero-names,
-.hero-image-content .hero-date,
-.hero-image-content .hero-subtitle {
+.hero-image-content .hero-date {
     opacity: 0;
     transform: translateY(50px) scale(0.8);
     transition: opacity 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
                 transform 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.hero-image-content .hero-title.animate,
 .hero-image-content .hero-names.animate,
-.hero-image-content .hero-date.animate,
-.hero-image-content .hero-subtitle.animate {
+.hero-image-content .hero-date.animate {
     opacity: 1;
     transform: translateY(0) scale(1);
     animation: popUp 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
@@ -237,16 +255,6 @@ img {
     }
 }
 
-.hero-image-content .hero-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 4rem;
-    font-weight: 700;
-    color: var(--white);
-    margin-bottom: 2rem;
-    letter-spacing: 3px;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
-}
-
 .hero-image-content .hero-names {
     display: flex;
     align-items: center;
@@ -258,11 +266,11 @@ img {
 
 .hero-image-content .hero-names .name {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 4.5rem;
+    font-size: 5.5rem;
     font-weight: 600;
-    color: var(--white);
-    letter-spacing: 3px;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+    color: #6B4423;
+    letter-spacing: 4px;
+    text-transform: uppercase;
 }
 
 .hero-image-content .hero-names .ampersand {
@@ -270,31 +278,14 @@ img {
     font-size: 3rem;
     color: var(--gold-accent);
     font-style: italic;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .hero-image-content .hero-date {
     font-size: 1.5rem;
-    color: var(--white);
+    color: var(--dark-grey);
     letter-spacing: 3px;
     margin: 2rem 0;
     font-weight: 300;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-.hero-image-content .hero-subtitle {
-    font-family: 'Great Vibes', cursive;
-    font-size: 1.8rem;
-    color: rgba(255, 255, 255, 0.95);
-    margin-top: 2rem;
-    font-weight: 400;
-    letter-spacing: 1px;
-    text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.5);
-    font-style: normal;
-    line-height: 1.6;
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 /* Container */
@@ -838,12 +829,16 @@ html {
         padding: 0 1.5rem;
     }
     
-    .hero-image-content .hero-title {
-        font-size: 3.5rem;
+    .hero-image-content .hero-names .name {
+        font-size: 4.5rem;
     }
     
-    .hero-image-content .hero-names .name {
-        font-size: 3.5rem;
+    .hero-invitation-box {
+        padding: 2.5rem 3rem;
+    }
+    
+    .hero-invitation-box .invitation-text {
+        font-size: 1.3rem;
     }
     
     .floating-photo {
@@ -962,31 +957,19 @@ html {
     }
     
     /* Allow animations on mobile with pop-up effect (slower and smoother) */
-    .hero-image-content .hero-title,
     .hero-image-content .hero-names,
-    .hero-image-content .hero-date,
-    .hero-image-content .hero-subtitle {
+    .hero-image-content .hero-date {
         opacity: 0;
         transform: translateY(50px) scale(0.8);
         transition: opacity 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
                     transform 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     
-    .hero-image-content .hero-title.animate,
     .hero-image-content .hero-names.animate,
-    .hero-image-content .hero-date.animate,
-    .hero-image-content .hero-subtitle.animate {
+    .hero-image-content .hero-date.animate {
         opacity: 1 !important;
         transform: translateY(0) scale(1) !important;
         animation: popUp 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
-    }
-    
-    .hero-image-content .hero-title {
-        font-size: 2.5rem;
-        margin-bottom: 1.5rem;
-        letter-spacing: 2px;
-        color: #6B4423;
-        text-shadow: none;
     }
     
     .hero-image-content .hero-names {
@@ -995,7 +978,7 @@ html {
     }
     
     .hero-image-content .hero-names .name {
-        font-size: 2.5rem;
+        font-size: 3rem;
         color: #6B4423;
         text-shadow: none;
     }
@@ -1014,13 +997,19 @@ html {
         text-shadow: none;
     }
     
-    .hero-image-content .hero-subtitle {
-        font-family: 'Great Vibes', cursive;
-        font-size: 1.3rem;
-        margin-top: 1.5rem;
-        color: var(--text-light);
-        text-shadow: none;
-        line-height: 1.5;
+    .hero-invitation-box {
+        margin: -60px auto 3rem auto;
+        padding: 2rem 1.5rem;
+        width: 95%;
+    }
+    
+    .hero-invitation-box .invitation-text {
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+    
+    .hero-image-content {
+        padding: 1rem 0 3rem 0;
     }
     
     /* Sections */
@@ -1260,30 +1249,19 @@ html {
     }
     
     /* Allow animations on small mobile with pop-up effect (slower and smoother) */
-    .hero-image-content .hero-title,
     .hero-image-content .hero-names,
-    .hero-image-content .hero-date,
-    .hero-image-content .hero-subtitle {
+    .hero-image-content .hero-date {
         opacity: 0;
         transform: translateY(50px) scale(0.8);
         transition: opacity 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
                     transform 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     
-    .hero-image-content .hero-title.animate,
     .hero-image-content .hero-names.animate,
-    .hero-image-content .hero-date.animate,
-    .hero-image-content .hero-subtitle.animate {
+    .hero-image-content .hero-date.animate {
         opacity: 1 !important;
         transform: translateY(0) scale(1) !important;
         animation: popUp 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards !important;
-    }
-    
-    .hero-image-content .hero-title {
-        font-size: 2rem;
-        margin-bottom: 1rem;
-        letter-spacing: 1px;
-        color: #6B4423;
     }
     
     .hero-image-content .hero-names {
@@ -1293,7 +1271,7 @@ html {
     }
     
     .hero-image-content .hero-names .name {
-        font-size: 2rem;
+        font-size: 2.2rem;
         letter-spacing: 1px;
         color: #6B4423;
     }
@@ -1310,13 +1288,19 @@ html {
         color: var(--dark-grey);
     }
     
-    .hero-image-content .hero-subtitle {
-        font-family: 'Great Vibes', cursive;
-        font-size: 1.1rem;
-        margin-top: 1rem;
-        letter-spacing: 0.5px;
-        color: var(--text-light);
-        line-height: 1.4;
+    .hero-invitation-box {
+        margin: -50px auto 2rem auto;
+        padding: 1.5rem 1rem;
+        width: 95%;
+    }
+    
+    .hero-invitation-box .invitation-text {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    .hero-image-content {
+        padding: 1rem 0 2rem 0;
     }
     
     /* Sections */
