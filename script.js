@@ -140,17 +140,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // Artistic photos - smooth animations and clickable
     const artisticPhotoMain = document.querySelector('.artistic-photo-main');
     const artisticPhotosSmall = document.querySelectorAll('.artistic-photo-small');
+    const artisticDecorativeLeaf = document.querySelector('.artistic-decorative-leaf');
     const allArtisticPhotos = [artisticPhotoMain, ...Array.from(artisticPhotosSmall)].filter(Boolean);
     
     // Animate photos with staggered effect
     function animateArtisticPhotos() {
-        // Animate main photo first
+        // Animate decorative leaf first
+        if (artisticDecorativeLeaf) {
+            artisticDecorativeLeaf.classList.remove('animate');
+            void artisticDecorativeLeaf.offsetHeight;
+            setTimeout(() => {
+                artisticDecorativeLeaf.classList.add('animate');
+            }, 100);
+        }
+        
+        // Animate main photo second
         if (artisticPhotoMain) {
             artisticPhotoMain.classList.remove('animate');
             void artisticPhotoMain.offsetHeight;
             setTimeout(() => {
                 artisticPhotoMain.classList.add('animate');
-            }, 100);
+            }, 300);
         }
         
         // Then animate small photos with staggered timing
@@ -159,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             void photo.offsetHeight;
             setTimeout(() => {
                 photo.classList.add('animate');
-            }, 300 + (index * 200));
+            }, 600 + (index * 150));
         });
     }
     
@@ -170,6 +180,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 animateArtisticPhotos();
             } else {
                 // Fade out when leaving center viewport
+                if (artisticDecorativeLeaf) {
+                    artisticDecorativeLeaf.classList.remove('animate');
+                }
                 allArtisticPhotos.forEach(photo => {
                     if (photo) photo.classList.remove('animate');
                 });
