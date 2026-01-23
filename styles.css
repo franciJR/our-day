@@ -817,31 +817,55 @@ body:not(.js-loaded) .love-story-text {
     box-shadow: 0 22px 60px rgba(0, 0, 0, 0.25);
 }
 
-/* Collection of smaller photos - creative staggered layout */
+/* Collection of smaller photos - unique artistic gallery layout */
 .artistic-photos-collection {
     position: relative;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-    align-items: center;
-    justify-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0;
     z-index: 2;
-    max-width: 1100px;
+    max-width: 1200px;
     width: 100%;
-    margin: 0 auto;
-    padding: 0 2rem;
+    margin: 2rem auto 0;
+    padding: 3rem 2rem;
+    min-height: 500px;
 }
 
 .artistic-photo-small {
-    position: relative;
+    position: absolute;
     cursor: pointer;
     opacity: 0;
-    transform: translateY(50px);
-    transition: opacity 1s ease-out, transform 1s ease-out;
+    transform: translateY(50px) scale(0.9);
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .artistic-photo-small.animate {
     opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.artistic-photo-small::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(250, 248, 245, 0.9) 100%);
+    border-radius: 24px;
+    z-index: -1;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12),
+                0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.artistic-photo-small:hover::before {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2),
+                0 5px 15px rgba(0, 0, 0, 0.15);
+    transform: scale(1.02);
 }
 
 .artistic-photo-small img {
@@ -849,72 +873,74 @@ body:not(.js-loaded) .love-story-text {
     height: 100%;
     object-fit: cover;
     display: block;
-    border-radius: 18px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
+    border-radius: 16px;
+    border: 8px solid var(--ivory-light);
+    box-shadow: inset 0 0 0 1px rgba(107, 68, 35, 0.1);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                filter 0.5s ease;
+    filter: brightness(0.98) contrast(1.02);
 }
 
 .artistic-photo-small:hover {
-    z-index: 4;
+    z-index: 10;
 }
 
 .artistic-photo-small:hover img {
-    transform: translateY(-8px) scale(1.06);
-    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
+    transform: translateY(-12px) scale(1.08);
+    filter: brightness(1.05) contrast(1.05);
 }
 
-/* Individual photo sizes and rotations for creative staggered layout */
+/* Unique positioning and sizing for each photo */
 .artistic-photo-small.photo-1 {
-    width: 100%;
-    max-width: 240px;
-    height: 300px;
-    transform: translateY(50px) rotate(-2deg);
-    grid-column: 1;
-    justify-self: end;
+    width: 280px;
+    height: 360px;
+    left: 8%;
+    top: 0;
+    transform: translateY(50px) rotate(-4deg) scale(0.9);
+    z-index: 1;
 }
 
 .artistic-photo-small.photo-1.animate {
-    transform: translateY(0) rotate(-2deg);
+    transform: translateY(0) rotate(-4deg) scale(1);
 }
 
 .artistic-photo-small.photo-2 {
-    width: 100%;
-    max-width: 260px;
-    height: 320px;
-    transform: translateY(50px) rotate(1.5deg);
-    grid-column: 2;
-    margin-top: -30px;
+    width: 320px;
+    height: 400px;
+    left: 50%;
+    top: -40px;
+    transform: translateX(-50%) translateY(50px) rotate(3deg) scale(0.9);
+    z-index: 3;
 }
 
 .artistic-photo-small.photo-2.animate {
-    transform: translateY(0) rotate(1.5deg);
+    transform: translateX(-50%) translateY(0) rotate(3deg) scale(1);
 }
 
 .artistic-photo-small.photo-3 {
-    width: 100%;
-    max-width: 250px;
-    height: 310px;
-    transform: translateY(50px) rotate(-1.2deg);
-    grid-column: 3;
-    margin-top: 20px;
+    width: 260px;
+    height: 340px;
+    right: 15%;
+    top: 60px;
+    transform: translateY(50px) rotate(-2.5deg) scale(0.9);
+    z-index: 2;
 }
 
 .artistic-photo-small.photo-3.animate {
-    transform: translateY(0) rotate(-1.2deg);
+    transform: translateY(0) rotate(-2.5deg) scale(1);
 }
 
 .artistic-photo-small.photo-4 {
-    width: 100%;
-    max-width: 245px;
-    height: 305px;
-    transform: translateY(50px) rotate(1.8deg);
-    grid-column: 4;
-    justify-self: start;
-    margin-top: -20px;
+    width: 300px;
+    height: 380px;
+    left: 25%;
+    top: 200px;
+    transform: translateY(50px) rotate(4.5deg) scale(0.9);
+    z-index: 1;
 }
 
 .artistic-photo-small.photo-4.animate {
-    transform: translateY(0) rotate(1.8deg);
+    transform: translateY(0) rotate(4.5deg) scale(1);
 }
 
 .footer {
@@ -1190,39 +1216,37 @@ html {
     }
     
     .artistic-photos-collection {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-        padding: 0 1rem;
+        position: relative;
+        min-height: 600px;
+        padding: 2rem 1rem;
     }
     
     .artistic-photo-small.photo-1 {
-        max-width: 200px;
-        height: 250px;
-        grid-column: 1;
-        justify-self: end;
-        margin-top: 0;
+        width: 200px;
+        height: 260px;
+        left: 5%;
+        top: 20px;
     }
     
     .artistic-photo-small.photo-2 {
-        max-width: 220px;
-        height: 270px;
-        grid-column: 2;
-        margin-top: -20px;
+        width: 240px;
+        height: 300px;
+        left: 50%;
+        top: -20px;
     }
     
     .artistic-photo-small.photo-3 {
-        max-width: 210px;
+        width: 200px;
         height: 260px;
-        grid-column: 1;
-        margin-top: 10px;
+        right: 8%;
+        top: 80px;
     }
     
     .artistic-photo-small.photo-4 {
-        max-width: 200px;
-        height: 250px;
-        grid-column: 2;
-        justify-self: start;
-        margin-top: -15px;
+        width: 220px;
+        height: 280px;
+        left: 20%;
+        top: 250px;
     }
     
     .ceremony-item {
@@ -1639,27 +1663,57 @@ html {
     
     .artistic-photos-collection {
         position: relative;
-        bottom: auto;
-        right: auto;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1rem;
+        min-height: 700px;
+        padding: 2rem 0.5rem;
     }
     
-    .artistic-photo-small.photo-1,
-    .artistic-photo-small.photo-2,
-    .artistic-photo-small.photo-3,
+    .artistic-photo-small {
+        position: relative;
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        margin: 1rem auto;
+        display: block;
+    }
+    
+    .artistic-photo-small.photo-1 {
+        width: 160px;
+        height: 210px;
+        transform: translateY(50px) rotate(-3deg) scale(0.9);
+    }
+    
+    .artistic-photo-small.photo-1.animate {
+        transform: translateY(0) rotate(-3deg) scale(1);
+    }
+    
+    .artistic-photo-small.photo-2 {
+        width: 180px;
+        height: 230px;
+        transform: translateY(50px) rotate(2deg) scale(0.9);
+    }
+    
+    .artistic-photo-small.photo-2.animate {
+        transform: translateY(0) rotate(2deg) scale(1);
+    }
+    
+    .artistic-photo-small.photo-3 {
+        width: 170px;
+        height: 220px;
+        transform: translateY(50px) rotate(-2deg) scale(0.9);
+    }
+    
+    .artistic-photo-small.photo-3.animate {
+        transform: translateY(0) rotate(-2deg) scale(1);
+    }
+    
     .artistic-photo-small.photo-4 {
-        width: 140px;
-        height: 175px;
-        transform: translateY(50px);
+        width: 175px;
+        height: 225px;
+        transform: translateY(50px) rotate(3deg) scale(0.9);
     }
     
-    .artistic-photo-small.photo-1.animate,
-    .artistic-photo-small.photo-2.animate,
-    .artistic-photo-small.photo-3.animate,
     .artistic-photo-small.photo-4.animate {
-        transform: translateY(0);
+        transform: translateY(0) rotate(3deg) scale(1);
     }
     
     /* Modal */
@@ -1732,27 +1786,57 @@ html {
     
     .artistic-photos-collection {
         position: relative;
-        bottom: auto;
-        right: auto;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1rem;
+        min-height: 700px;
+        padding: 2rem 0.5rem;
     }
     
-    .artistic-photo-small.photo-1,
-    .artistic-photo-small.photo-2,
-    .artistic-photo-small.photo-3,
+    .artistic-photo-small {
+        position: relative;
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        margin: 1rem auto;
+        display: block;
+    }
+    
+    .artistic-photo-small.photo-1 {
+        width: 160px;
+        height: 210px;
+        transform: translateY(50px) rotate(-3deg) scale(0.9);
+    }
+    
+    .artistic-photo-small.photo-1.animate {
+        transform: translateY(0) rotate(-3deg) scale(1);
+    }
+    
+    .artistic-photo-small.photo-2 {
+        width: 180px;
+        height: 230px;
+        transform: translateY(50px) rotate(2deg) scale(0.9);
+    }
+    
+    .artistic-photo-small.photo-2.animate {
+        transform: translateY(0) rotate(2deg) scale(1);
+    }
+    
+    .artistic-photo-small.photo-3 {
+        width: 170px;
+        height: 220px;
+        transform: translateY(50px) rotate(-2deg) scale(0.9);
+    }
+    
+    .artistic-photo-small.photo-3.animate {
+        transform: translateY(0) rotate(-2deg) scale(1);
+    }
+    
     .artistic-photo-small.photo-4 {
-        width: 140px;
-        height: 175px;
-        transform: translateY(50px);
+        width: 175px;
+        height: 225px;
+        transform: translateY(50px) rotate(3deg) scale(0.9);
     }
     
-    .artistic-photo-small.photo-1.animate,
-    .artistic-photo-small.photo-2.animate,
-    .artistic-photo-small.photo-3.animate,
     .artistic-photo-small.photo-4.animate {
-        transform: translateY(0);
+        transform: translateY(0) rotate(3deg) scale(1);
     }
     
     .footer {
