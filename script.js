@@ -1,51 +1,51 @@
-// Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            const offsetTop = target.offsetTop - 80; // Account for fixed navbar
-            window.scrollTo({
-                top: offsetTop,
-                behavior: 'smooth'
-            });
-        }
+// Wait for DOM to be ready before accessing elements
+document.addEventListener('DOMContentLoaded', () => {
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const offsetTop = target.offsetTop - 80; // Account for fixed navbar
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        });
     });
+
+    // Add active state to navigation on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    function updateActiveNav() {
+        let current = '';
+        const scrollY = window.pageYOffset;
+
+        sections.forEach(section => {
+            const sectionHeight = section.offsetHeight;
+            const sectionTop = section.offsetTop - 100;
+            const sectionId = section.getAttribute('id');
+
+            if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+                current = sectionId;
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    window.addEventListener('scroll', updateActiveNav);
 });
 
-// Add active state to navigation on scroll
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav-link');
-
-function updateActiveNav() {
-    let current = '';
-    const scrollY = window.pageYOffset;
-
-    sections.forEach(section => {
-        const sectionHeight = section.offsetHeight;
-        const sectionTop = section.offsetTop - 100;
-        const sectionId = section.getAttribute('id');
-
-        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-            current = sectionId;
-        }
-    });
-
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-        }
-    });
-}
-
-window.addEventListener('scroll', updateActiveNav);
-
-// Modal elements - define early so they can be used in event listeners
-const modal = document.getElementById('photoModal');
-const modalImg = document.getElementById('modalImage');
-const modalCaption = document.getElementById('modalCaption');
-const closeBtn = document.querySelector('.modal-close');
+// Modal elements - will be defined after DOM loads
+let modal, modalImg, modalCaption, closeBtn;
 
 // Enhanced fade in animation on scroll with staggered effect
 // Show content when it enters the viewport
@@ -97,6 +97,31 @@ const ceremonyObserver = new IntersectionObserver((entries) => {
 
 // Observe elements for fade-in animation
 document.addEventListener('DOMContentLoaded', () => {
+    // Mark body as JS loaded for CSS to know JavaScript is active
+    document.body.classList.add('js-loaded');
+    
+    // Initialize modal elements
+    modal = document.getElementById('photoModal');
+    modalImg = document.getElementById('modalImage');
+    modalCaption = document.getElementById('modalCaption');
+    closeBtn = document.querySelector('.modal-close');
+    
+    // Initialize navbar
+    navbar = document.querySelector('.navbar');
+    
+    // Navbar background on scroll
+    if (navbar) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(255, 254, 240, 0.98)';
+                navbar.style.boxShadow = '0 2px 15px rgba(0, 0, 0, 0.1)';
+            } else {
+                navbar.style.background = 'rgba(255, 254, 240, 0.95)';
+                navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.05)';
+            }
+        });
+    }
+    
     // Enhanced photo animations
     const photoItems = document.querySelectorAll('.photo-item');
     photoItems.forEach((el, index) => {
@@ -109,10 +134,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Love story text animation
     const loveStoryText = document.querySelector('.love-story-text');
     if (loveStoryText) {
+        // Ensure it has animate class to keep it visible
+        if (!loveStoryText.classList.contains('animate')) {
+            loveStoryText.classList.add('animate');
+        }
+        
         // Use a more lenient observer for story text
         const storyObserverOptions = {
             threshold: 0.1,
-            rootMargin: '-20% 0px -20% 0px'
+            rootMargin: '0px 0px -10% 0px'
         };
         
         const storyTextObserver = new IntersectionObserver((entries) => {
@@ -130,28 +160,33 @@ document.addEventListener('DOMContentLoaded', () => {
         // Also check if already in viewport on load
         setTimeout(() => {
             const rect = loveStoryText.getBoundingClientRect();
-            const isInViewport = rect.top < window.innerHeight * 0.9 && rect.bottom > 0;
-            if (isInViewport && !loveStoryText.classList.contains('animate')) {
+            const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+            if (isInViewport) {
                 loveStoryText.classList.add('animate');
             }
-        }, 300);
+        }, 100);
     }
     
     // Ceremony animations
     const ceremonyItems = document.querySelectorAll('.ceremony-item');
     ceremonyItems.forEach((el, index) => {
+        // Ensure it has animate class to keep it visible
+        if (!el.classList.contains('animate')) {
+            el.classList.add('animate');
+        }
+        
         ceremonyObserver.observe(el);
         
         // Check if already in viewport on load and animate immediately
         setTimeout(() => {
             const rect = el.getBoundingClientRect();
-            const isInViewport = rect.top < window.innerHeight * 0.9 && rect.bottom > 0;
-            if (isInViewport && !el.classList.contains('animate')) {
+            const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+            if (isInViewport) {
                 setTimeout(() => {
                     el.classList.add('animate');
                 }, index * 200);
             }
-        }, 200);
+        }, 100);
     });
     
     // Artistic photos - smooth animations and clickable
@@ -226,23 +261,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Navbar background on scroll
-const navbar = document.querySelector('.navbar');
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(255, 254, 240, 0.98)';
-        navbar.style.boxShadow = '0 2px 15px rgba(0, 0, 0, 0.1)';
-    } else {
-        navbar.style.background = 'rgba(255, 254, 240, 0.95)';
-        navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.05)';
-    }
-});
-
-// Photo Modal/Lightbox functionality
-const modal = document.getElementById('photoModal');
-const modalImg = document.getElementById('modalImage');
-const modalCaption = document.getElementById('modalCaption');
-const closeBtn = document.querySelector('.modal-close');
+// Navbar background on scroll - will be initialized in DOMContentLoaded
+let navbar;
 
 // Open modal when photo is clicked
 document.addEventListener('DOMContentLoaded', () => {
