@@ -275,19 +275,19 @@ img {
 }
 
 .hero-image-content .hero-names .name {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Amatic SC', cursive;
     font-size: 5.5rem;
-    font-weight: 600;
+    font-weight: 700;
     color: #6B4423;
     letter-spacing: 4px;
     text-transform: uppercase;
 }
 
 .hero-image-content .hero-names .ampersand {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Amatic SC', cursive;
     font-size: 3rem;
     color: var(--gold-accent);
-    font-style: italic;
+    font-weight: 700;
 }
 
 .hero-image-content .hero-date {
@@ -408,7 +408,7 @@ body:not(.js-loaded) .ceremony-item {
 }
 
 .ceremony-time {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Bellefair', serif;
     font-size: 1.1rem;
     color: var(--dark-grey);
     font-weight: 400;
@@ -973,6 +973,7 @@ html {
     }
     
     .hero-image-content .hero-names .name {
+        font-family: 'Amatic SC', cursive;
         font-size: 4.5rem;
     }
     
@@ -1129,18 +1130,21 @@ html {
     }
     
     .hero-image-content .hero-names .name {
+        font-family: 'Amatic SC', cursive;
         font-size: 3rem;
         color: #6B4423;
         text-shadow: none;
     }
     
     .hero-image-content .hero-names .ampersand {
+        font-family: 'Amatic SC', cursive;
         font-size: 1.8rem;
         color: var(--gold-accent);
         text-shadow: none;
     }
     
     .hero-image-content .hero-date {
+        font-family: 'Bellefair', serif;
         font-size: 1.8rem;
         margin: 1.5rem 0;
         letter-spacing: 2px;
@@ -1166,6 +1170,7 @@ html {
     }
     
     .hero-image-content .hero-date {
+        font-family: 'Bellefair', serif;
         font-size: 1.8rem;
     }
     
@@ -1263,6 +1268,7 @@ html {
     
     .ceremony-date,
     .ceremony-time {
+        font-family: 'Bellefair', serif;
         font-size: 1rem;
     }
     
@@ -1337,6 +1343,7 @@ html {
     }
     
     .story-date {
+        font-family: 'Bellefair', serif;
         font-size: 1.3rem;
     }
     
@@ -1478,17 +1485,20 @@ html {
     }
     
     .hero-image-content .hero-names .name {
+        font-family: 'Amatic SC', cursive;
         font-size: 2.2rem;
         letter-spacing: 1px;
         color: #6B4423;
     }
     
     .hero-image-content .hero-names .ampersand {
+        font-family: 'Amatic SC', cursive;
         font-size: 1.5rem;
         color: var(--gold-accent);
     }
     
     .hero-image-content .hero-date {
+        font-family: 'Bellefair', serif;
         font-size: 0.9rem;
         margin: 1rem 0;
         letter-spacing: 1px;
@@ -1512,6 +1522,7 @@ html {
     }
     
     .hero-image-content .hero-date {
+        font-family: 'Bellefair', serif;
         font-size: 1.5rem;
     }
     
@@ -1532,6 +1543,7 @@ html {
     }
     
     .story-date {
+        font-family: 'Bellefair', serif;
         font-size: 1.2rem;
     }
     
@@ -1581,6 +1593,7 @@ html {
     
     .ceremony-date,
     .ceremony-time {
+        font-family: 'Bellefair', serif;
         font-size: 0.95rem;
     }
     
