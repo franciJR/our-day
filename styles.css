@@ -722,78 +722,77 @@ body:not(.js-loaded) .love-story-text {
 }
 
 /* Footer */
-/* Artistic Photos Section - Asymmetrical Gallery Layout */
+/* Artistic Photos Section - Compact Gallery Layout */
 .artistic-photos-section {
-    padding: 8rem 0;
+    padding: 6rem 0;
     background: var(--ivory-light);
     position: relative;
     overflow: hidden;
-    min-height: 900px;
 }
 
 .artistic-photos-wrapper {
     position: relative;
-    max-width: 1600px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 4%;
-    height: 100%;
 }
 
 .artistic-photos-container {
     position: relative;
     width: 100%;
-    height: 100%;
-    min-height: 850px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    padding: 2rem 0;
 }
 
 /* Decorative leaf element */
 .artistic-decorative-leaf {
     position: absolute;
-    left: 5%;
-    top: 15%;
-    width: 120px;
-    height: 150px;
-    background: linear-gradient(135deg, rgba(107, 68, 35, 0.1) 0%, rgba(107, 68, 35, 0.05) 100%);
+    left: 8%;
+    top: 10%;
+    width: 100px;
+    height: 120px;
+    background: linear-gradient(135deg, rgba(107, 68, 35, 0.12) 0%, rgba(107, 68, 35, 0.06) 100%);
     border-radius: 0 100% 0 100%;
     opacity: 0;
-    transform: rotate(-15deg) scale(0.8);
+    transform: rotate(-12deg) scale(0.8);
     transition: opacity 1.5s ease-out, transform 1.5s ease-out;
     z-index: 1;
 }
 
 .artistic-decorative-leaf.animate {
     opacity: 1;
-    transform: rotate(-15deg) scale(1);
+    transform: rotate(-12deg) scale(1);
 }
 
 .artistic-decorative-leaf::before {
     content: '';
     position: absolute;
-    top: 20%;
-    left: 30%;
-    width: 60%;
-    height: 60%;
-    background: linear-gradient(135deg, rgba(107, 68, 35, 0.15) 0%, rgba(107, 68, 35, 0.08) 100%);
+    top: 25%;
+    left: 35%;
+    width: 50%;
+    height: 50%;
+    background: linear-gradient(135deg, rgba(107, 68, 35, 0.18) 0%, rgba(107, 68, 35, 0.1) 100%);
     border-radius: 0 100% 0 100%;
 }
 
-/* Main featured photo - top right, portrait */
+/* Main featured photo - centered top */
 .artistic-photo-main {
-    position: absolute;
-    top: 0;
-    right: 8%;
-    width: 480px;
-    height: 620px;
+    position: relative;
+    width: 450px;
+    height: 580px;
     cursor: pointer;
     opacity: 0;
-    transform: translateY(40px) rotate(2deg);
+    transform: translateY(40px) rotate(1deg);
     transition: opacity 1.2s ease-out, transform 1.2s ease-out;
     z-index: 3;
 }
 
 .artistic-photo-main.animate {
     opacity: 1;
-    transform: translateY(0) rotate(2deg);
+    transform: translateY(0) rotate(1deg);
 }
 
 .artistic-photo-main img {
@@ -801,29 +800,30 @@ body:not(.js-loaded) .love-story-text {
     height: 100%;
     object-fit: cover;
     display: block;
-    border-radius: 25px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
 }
 
 .artistic-photo-main:hover {
-    transform: translateY(-8px) rotate(2deg) scale(1.02);
+    transform: translateY(-8px) rotate(1deg) scale(1.02);
     z-index: 5;
 }
 
 .artistic-photo-main:hover img {
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.25);
 }
 
 /* Collection of smaller photos - bottom row */
 .artistic-photos-collection {
-    position: absolute;
-    bottom: 5%;
-    right: 8%;
+    position: relative;
     display: flex;
-    gap: 1.8rem;
-    align-items: flex-end;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
     z-index: 2;
+    max-width: 100%;
 }
 
 .artistic-photo-small {
@@ -843,8 +843,8 @@ body:not(.js-loaded) .love-story-text {
     height: 100%;
     object-fit: cover;
     display: block;
-    border-radius: 20px;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
 }
 
@@ -853,49 +853,49 @@ body:not(.js-loaded) .love-story-text {
 }
 
 .artistic-photo-small:hover img {
-    transform: translateY(-10px) scale(1.08);
-    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.3);
+    transform: translateY(-8px) scale(1.06);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
 }
 
 /* Individual photo sizes and rotations for uniqueness */
 .artistic-photo-small.photo-1 {
-    width: 260px;
-    height: 320px;
-    transform: translateY(50px) rotate(-1.5deg);
+    width: 240px;
+    height: 300px;
+    transform: translateY(50px) rotate(-1deg);
 }
 
 .artistic-photo-small.photo-1.animate {
-    transform: translateY(0) rotate(-1.5deg);
+    transform: translateY(0) rotate(-1deg);
 }
 
 .artistic-photo-small.photo-2 {
-    width: 280px;
-    height: 350px;
-    transform: translateY(50px) rotate(1deg);
+    width: 260px;
+    height: 320px;
+    transform: translateY(50px) rotate(0.8deg);
 }
 
 .artistic-photo-small.photo-2.animate {
-    transform: translateY(0) rotate(1deg);
+    transform: translateY(0) rotate(0.8deg);
 }
 
 .artistic-photo-small.photo-3 {
-    width: 270px;
-    height: 340px;
-    transform: translateY(50px) rotate(-0.8deg);
+    width: 250px;
+    height: 310px;
+    transform: translateY(50px) rotate(-0.6deg);
 }
 
 .artistic-photo-small.photo-3.animate {
-    transform: translateY(0) rotate(-0.8deg);
+    transform: translateY(0) rotate(-0.6deg);
 }
 
 .artistic-photo-small.photo-4 {
-    width: 265px;
-    height: 330px;
-    transform: translateY(50px) rotate(1.2deg);
+    width: 245px;
+    height: 305px;
+    transform: translateY(50px) rotate(1deg);
 }
 
 .artistic-photo-small.photo-4.animate {
-    transform: translateY(0) rotate(1.2deg);
+    transform: translateY(0) rotate(1deg);
 }
 
 .footer {
@@ -1154,39 +1154,44 @@ html {
     }
     
     .artistic-photos-container {
-        min-height: 700px;
+        gap: 2.5rem;
+        padding: 1.5rem 0;
+    }
+    
+    .artistic-decorative-leaf {
+        width: 70px;
+        height: 90px;
+        left: 5%;
+        top: 8%;
     }
     
     .artistic-photo-main {
         width: 380px;
         height: 490px;
-        right: 5%;
     }
     
     .artistic-photos-collection {
-        bottom: 3%;
-        right: 5%;
         gap: 1.2rem;
     }
     
     .artistic-photo-small.photo-1 {
-        width: 200px;
-        height: 250px;
+        width: 180px;
+        height: 225px;
     }
     
     .artistic-photo-small.photo-2 {
-        width: 215px;
-        height: 270px;
+        width: 195px;
+        height: 240px;
     }
     
     .artistic-photo-small.photo-3 {
-        width: 205px;
-        height: 260px;
+        width: 185px;
+        height: 230px;
     }
     
     .artistic-photo-small.photo-4 {
-        width: 200px;
-        height: 250px;
+        width: 180px;
+        height: 225px;
     }
     
     .ceremony-item {
