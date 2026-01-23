@@ -41,6 +41,12 @@ function updateActiveNav() {
 
 window.addEventListener('scroll', updateActiveNav);
 
+// Modal elements - define early so they can be used in event listeners
+const modal = document.getElementById('photoModal');
+const modalImg = document.getElementById('modalImage');
+const modalCaption = document.getElementById('modalCaption');
+const closeBtn = document.querySelector('.modal-close');
+
 // Enhanced fade in animation on scroll with staggered effect
 // Only show content when in center viewport (30% from top and bottom)
 const observerOptions = {
@@ -200,24 +206,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Make photos clickable to open in modal
-    allArtisticPhotos.forEach(photo => {
-        if (photo) {
-            photo.addEventListener('click', function() {
-                const img = this.querySelector('img');
-                if (img) {
-                    modal.style.display = 'flex';
-                    modalImg.src = img.src;
-                    modalImg.alt = img.alt;
-                    modalCaption.textContent = '';
-                    
-                    setTimeout(() => {
-                    modal.classList.add('active');
-                }, 10);
-                
-                document.body.style.overflow = 'hidden';
+    const modal = document.getElementById('photoModal');
+    const modalImg = document.getElementById('modalImage');
+    const modalCaption = document.getElementById('modalCaption');
+    
+    if (modal && modalImg && modalCaption) {
+        allArtisticPhotos.forEach(photo => {
+            if (photo) {
+                photo.addEventListener('click', function() {
+                    const img = this.querySelector('img');
+                    if (img) {
+                        modal.style.display = 'flex';
+                        modalImg.src = img.src;
+                        modalImg.alt = img.alt;
+                        modalCaption.textContent = '';
+                        
+                        setTimeout(() => {
+                            modal.classList.add('active');
+                        }, 10);
+                        
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
             }
         });
-    });
+    }
 });
 
 // Navbar background on scroll
