@@ -48,10 +48,10 @@ const modalCaption = document.getElementById('modalCaption');
 const closeBtn = document.querySelector('.modal-close');
 
 // Enhanced fade in animation on scroll with staggered effect
-// Only show content when in center viewport (30% from top and bottom)
+// Show content when it enters the viewport
 const observerOptions = {
-    threshold: 0.3,
-    rootMargin: '-30% 0px -30% 0px' // Hide content when not in center 40% of viewport
+    threshold: 0.1,
+    rootMargin: '0px 0px -10% 0px' // Trigger when element is 90% visible from top
 };
 
 const photoObserver = new IntersectionObserver((entries) => {
@@ -130,17 +130,28 @@ document.addEventListener('DOMContentLoaded', () => {
         // Also check if already in viewport on load
         setTimeout(() => {
             const rect = loveStoryText.getBoundingClientRect();
-            const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+            const isInViewport = rect.top < window.innerHeight * 0.9 && rect.bottom > 0;
             if (isInViewport && !loveStoryText.classList.contains('animate')) {
                 loveStoryText.classList.add('animate');
             }
-        }, 100);
+        }, 300);
     }
     
     // Ceremony animations
     const ceremonyItems = document.querySelectorAll('.ceremony-item');
-    ceremonyItems.forEach(el => {
+    ceremonyItems.forEach((el, index) => {
         ceremonyObserver.observe(el);
+        
+        // Check if already in viewport on load and animate immediately
+        setTimeout(() => {
+            const rect = el.getBoundingClientRect();
+            const isInViewport = rect.top < window.innerHeight * 0.9 && rect.bottom > 0;
+            if (isInViewport && !el.classList.contains('animate')) {
+                setTimeout(() => {
+                    el.classList.add('animate');
+                }, index * 200);
+            }
+        }, 200);
     });
     
     // Artistic photos - smooth animations and clickable
@@ -165,16 +176,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Animate when section comes into view
                 animateArtisticPhotos();
             } else {
-                // Fade out when leaving center viewport
+                // Fade out when leaving viewport
                 artisticPhotos.forEach(photo => {
                     photo.classList.remove('animate');
                 });
             }
         });
     }, {
-        threshold: 0.2,
-        rootMargin: '-30% 0px -30% 0px' // Only show when in center viewport
+        threshold: 0.1,
+        rootMargin: '0px 0px -10% 0px'
     });
+    
+    // Check if artistic photos section is already in viewport on load
+    setTimeout(() => {
+        const artisticPhotosSection = document.querySelector('.artistic-photos-section');
+        if (artisticPhotosSection) {
+            const rect = artisticPhotosSection.getBoundingClientRect();
+            const isInViewport = rect.top < window.innerHeight * 0.9 && rect.bottom > 0;
+            if (isInViewport) {
+                animateArtisticPhotos();
+            }
+        }
+    }, 400);
     
     // Observe the photos section
     const artisticPhotosSection = document.querySelector('.artistic-photos-section');
