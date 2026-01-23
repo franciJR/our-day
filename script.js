@@ -190,19 +190,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Artistic photos - smooth animations and clickable
-    const artisticPhotos = document.querySelectorAll('.artistic-photo');
+    // Artistic photos - unique gallery layout
+    const artisticPhotoMain = document.querySelector('.artistic-photo-main');
+    const artisticPhotosSmall = document.querySelectorAll('.artistic-photo-small');
+    const artisticDecorativeLeaf = document.querySelector('.artistic-decorative-leaf');
+    const allArtisticPhotos = [artisticPhotoMain, ...Array.from(artisticPhotosSmall)].filter(Boolean);
     
     // Animate photos with staggered effect
     function animateArtisticPhotos() {
-        artisticPhotos.forEach((photo, index) => {
+        // Animate decorative leaf first
+        if (artisticDecorativeLeaf) {
+            artisticDecorativeLeaf.classList.remove('animate');
+            void artisticDecorativeLeaf.offsetHeight;
+            setTimeout(() => {
+                artisticDecorativeLeaf.classList.add('animate');
+            }, 100);
+        }
+        
+        // Animate main photo second
+        if (artisticPhotoMain) {
+            artisticPhotoMain.classList.remove('animate');
+            void artisticPhotoMain.offsetHeight;
+            setTimeout(() => {
+                artisticPhotoMain.classList.add('animate');
+            }, 300);
+        }
+        
+        // Then animate small photos with staggered timing
+        artisticPhotosSmall.forEach((photo, index) => {
             photo.classList.remove('animate');
-            // Trigger reflow
             void photo.offsetHeight;
-            // Add animate class with staggered timing
             setTimeout(() => {
                 photo.classList.add('animate');
-            }, index * 300);
+            }, 600 + (index * 150));
         });
     }
     
@@ -213,8 +233,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 animateArtisticPhotos();
             } else {
                 // Fade out when leaving viewport
-                artisticPhotos.forEach(photo => {
-                    photo.classList.remove('animate');
+                if (artisticDecorativeLeaf) {
+                    artisticDecorativeLeaf.classList.remove('animate');
+                }
+                allArtisticPhotos.forEach(photo => {
+                    if (photo) photo.classList.remove('animate');
                 });
             }
         });
@@ -224,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Check if artistic photos section is already in viewport on load
-    requestAnimationFrame(() => {
+    setTimeout(() => {
         const artisticPhotosSection = document.querySelector('.artistic-photos-section');
         if (artisticPhotosSection) {
             const rect = artisticPhotosSection.getBoundingClientRect();
@@ -233,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 animateArtisticPhotos();
             }
         }
-    });
+    }, 400);
     
     // Observe the photos section
     const artisticPhotosSection = document.querySelector('.artistic-photos-section');
@@ -242,24 +265,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Make photos clickable to open in modal
-    artisticPhotos.forEach(photo => {
-        // Make photos clickable to open in modal
-        photo.addEventListener('click', function() {
-            const img = this.querySelector('img');
-            if (img && modal && modalImg && modalCaption) {
-                modal.style.display = 'flex';
-                modalImg.src = img.src;
-                modalImg.alt = img.alt;
-                modalCaption.textContent = '';
-                
-                setTimeout(() => {
-                    modal.classList.add('active');
-                }, 10);
-                
-                document.body.style.overflow = 'hidden';
+    if (modal && modalImg && modalCaption) {
+        allArtisticPhotos.forEach(photo => {
+            if (photo) {
+                photo.addEventListener('click', function() {
+                    const img = this.querySelector('img');
+                    if (img) {
+                        modal.style.display = 'flex';
+                        modalImg.src = img.src;
+                        modalImg.alt = img.alt;
+                        modalCaption.textContent = '';
+                        
+                        setTimeout(() => {
+                            modal.classList.add('active');
+                        }, 10);
+                        
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
             }
         });
-    });
+    }
 });
 
 // Navbar background on scroll - will be initialized in DOMContentLoaded
