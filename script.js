@@ -81,19 +81,28 @@ const timelineObserver = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
+// Ceremony observer with more lenient options
+const ceremonyObserverOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -5% 0px' // More lenient - trigger when 95% visible from top
+};
+
 const ceremonyObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
+    entries.forEach((entry) => {
         if (entry.isIntersecting) {
+            // Get the index of this element among all ceremony items
+            const ceremonyItems = document.querySelectorAll('.ceremony-item');
+            const index = Array.from(ceremonyItems).indexOf(entry.target);
             // Stagger the animation for each ceremony item
             setTimeout(() => {
                 entry.target.classList.add('animate');
             }, index * 200); // 200ms delay between each ceremony
         } else {
-            // Fade out when leaving center viewport
+            // Fade out when leaving viewport
             entry.target.classList.remove('animate');
         }
     });
-}, observerOptions);
+}, ceremonyObserverOptions);
 
 // Observe elements for fade-in animation
 document.addEventListener('DOMContentLoaded', () => {
@@ -164,20 +173,22 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Ceremony animations
     const ceremonyItems = document.querySelectorAll('.ceremony-item');
-    ceremonyItems.forEach((el, index) => {
-        ceremonyObserver.observe(el);
-        
-        // Check if already in viewport on load and animate immediately
-        requestAnimationFrame(() => {
-            const rect = el.getBoundingClientRect();
-            const isInViewport = rect.top < window.innerHeight * 0.9 && rect.bottom > 0;
-            if (isInViewport) {
-                setTimeout(() => {
-                    el.classList.add('animate');
-                }, index * 200);
-            }
+    if (ceremonyItems.length > 0) {
+        ceremonyItems.forEach((el, index) => {
+            ceremonyObserver.observe(el);
+            
+            // Check if already in viewport on load and animate immediately
+            setTimeout(() => {
+                const rect = el.getBoundingClientRect();
+                const isInViewport = rect.top < window.innerHeight * 0.9 && rect.bottom > 0;
+                if (isInViewport && !el.classList.contains('animate')) {
+                    setTimeout(() => {
+                        el.classList.add('animate');
+                    }, index * 200);
+                }
+            }, 300);
         });
-    });
+    }
     
     // Artistic photos - smooth animations and clickable
     const artisticPhotos = document.querySelectorAll('.artistic-photo');
