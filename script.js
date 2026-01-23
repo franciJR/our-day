@@ -138,18 +138,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Artistic photos - smooth animations and clickable
-    const artisticPhotos = document.querySelectorAll('.artistic-photo');
+    const artisticPhotoMain = document.querySelector('.artistic-photo-main');
+    const artisticPhotosSmall = document.querySelectorAll('.artistic-photo-small');
+    const allArtisticPhotos = [artisticPhotoMain, ...Array.from(artisticPhotosSmall)].filter(Boolean);
     
     // Animate photos with staggered effect
     function animateArtisticPhotos() {
-        artisticPhotos.forEach((photo, index) => {
+        // Animate main photo first
+        if (artisticPhotoMain) {
+            artisticPhotoMain.classList.remove('animate');
+            void artisticPhotoMain.offsetHeight;
+            setTimeout(() => {
+                artisticPhotoMain.classList.add('animate');
+            }, 100);
+        }
+        
+        // Then animate small photos with staggered timing
+        artisticPhotosSmall.forEach((photo, index) => {
             photo.classList.remove('animate');
-            // Trigger reflow
             void photo.offsetHeight;
-            // Add animate class with staggered timing
             setTimeout(() => {
                 photo.classList.add('animate');
-            }, index * 300);
+            }, 300 + (index * 200));
         });
     }
     
@@ -160,14 +170,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 animateArtisticPhotos();
             } else {
                 // Fade out when leaving center viewport
-                artisticPhotos.forEach(photo => {
-                    photo.classList.remove('animate');
+                allArtisticPhotos.forEach(photo => {
+                    if (photo) photo.classList.remove('animate');
                 });
             }
         });
     }, {
         threshold: 0.2,
-        rootMargin: '-30% 0px -30% 0px' // Only show when in center viewport
+        rootMargin: '-20% 0px -20% 0px'
     });
     
     // Observe the photos section
@@ -176,17 +186,18 @@ document.addEventListener('DOMContentLoaded', () => {
         artisticPhotoObserver.observe(artisticPhotosSection);
     }
     
-    artisticPhotos.forEach(photo => {
-        // Make photos clickable to open in modal
-        photo.addEventListener('click', function() {
-            const img = this.querySelector('img');
-            if (img) {
-                modal.style.display = 'flex';
-                modalImg.src = img.src;
-                modalImg.alt = img.alt;
-                modalCaption.textContent = '';
-                
-                setTimeout(() => {
+    // Make photos clickable to open in modal
+    allArtisticPhotos.forEach(photo => {
+        if (photo) {
+            photo.addEventListener('click', function() {
+                const img = this.querySelector('img');
+                if (img) {
+                    modal.style.display = 'flex';
+                    modalImg.src = img.src;
+                    modalImg.alt = img.alt;
+                    modalCaption.textContent = '';
+                    
+                    setTimeout(() => {
                     modal.classList.add('active');
                 }, 10);
                 
