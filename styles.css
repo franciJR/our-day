@@ -743,17 +743,19 @@ body:not(.js-loaded) .love-story-text {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3rem;
+    justify-content: center;
+    gap: 2.5rem;
     padding: 2rem 0;
+    min-height: auto;
 }
 
 /* Decorative leaf element */
 .artistic-decorative-leaf {
     position: absolute;
-    left: 8%;
-    top: 10%;
-    width: 100px;
-    height: 120px;
+    left: 6%;
+    top: 5%;
+    width: 80px;
+    height: 100px;
     background: linear-gradient(135deg, rgba(107, 68, 35, 0.12) 0%, rgba(107, 68, 35, 0.06) 100%);
     border-radius: 0 100% 0 100%;
     opacity: 0;
@@ -781,13 +783,14 @@ body:not(.js-loaded) .love-story-text {
 /* Main featured photo - centered top */
 .artistic-photo-main {
     position: relative;
-    width: 450px;
-    height: 580px;
+    width: 420px;
+    height: 540px;
     cursor: pointer;
     opacity: 0;
     transform: translateY(40px) rotate(1deg);
     transition: opacity 1.2s ease-out, transform 1.2s ease-out;
     z-index: 3;
+    margin: 0 auto;
 }
 
 .artistic-photo-main.animate {
@@ -818,12 +821,13 @@ body:not(.js-loaded) .love-story-text {
 .artistic-photos-collection {
     position: relative;
     display: flex;
-    gap: 1.5rem;
+    gap: 1.2rem;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
     z-index: 2;
     max-width: 100%;
+    width: 100%;
 }
 
 .artistic-photo-small {
@@ -859,8 +863,8 @@ body:not(.js-loaded) .love-story-text {
 
 /* Individual photo sizes and rotations for uniqueness */
 .artistic-photo-small.photo-1 {
-    width: 240px;
-    height: 300px;
+    width: 220px;
+    height: 280px;
     transform: translateY(50px) rotate(-1deg);
 }
 
@@ -869,8 +873,8 @@ body:not(.js-loaded) .love-story-text {
 }
 
 .artistic-photo-small.photo-2 {
-    width: 260px;
-    height: 320px;
+    width: 240px;
+    height: 300px;
     transform: translateY(50px) rotate(0.8deg);
 }
 
@@ -879,8 +883,8 @@ body:not(.js-loaded) .love-story-text {
 }
 
 .artistic-photo-small.photo-3 {
-    width: 250px;
-    height: 310px;
+    width: 230px;
+    height: 290px;
     transform: translateY(50px) rotate(-0.6deg);
 }
 
@@ -889,8 +893,8 @@ body:not(.js-loaded) .love-story-text {
 }
 
 .artistic-photo-small.photo-4 {
-    width: 245px;
-    height: 305px;
+    width: 225px;
+    height: 285px;
     transform: translateY(50px) rotate(1deg);
 }
 
