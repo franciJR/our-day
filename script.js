@@ -270,11 +270,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (photo) {
                 photo.addEventListener('click', function() {
                     const img = this.querySelector('img');
-                    if (img) {
-                        modal.style.display = 'flex';
+                    if (img && modal && modalImg && modalCaption) {
                         modalImg.src = img.src;
                         modalImg.alt = img.alt;
                         modalCaption.textContent = '';
+                        modal.style.display = 'flex';
+                        
+                        // Force reflow to ensure display is applied before adding active class
+                        void modal.offsetHeight;
                         
                         setTimeout(() => {
                             modal.classList.add('active');
@@ -288,34 +291,70 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Close modal functions
-    function closeModal() {
-        if (modal) {
-            modal.classList.remove('active');
-            setTimeout(() => {
+    function closeModal(e) {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        if (!modal) return;
+        
+        // Remove active class immediately
+        modal.classList.remove('active');
+        
+        // Hide modal and restore scroll after transition
+        setTimeout(() => {
+            if (modal) {
                 modal.style.display = 'none';
                 document.body.style.overflow = '';
-            }, 400);
-        }
+                // Reset modal image source to prevent showing old image briefly
+                if (modalImg) {
+                    modalImg.src = '';
+                }
+            }
+        }, 400);
     }
     
     // Close modal when clicking the X button
     if (closeBtn) {
-        closeBtn.addEventListener('click', closeModal);
+        closeBtn.onclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeModal(e);
+            return false;
+        };
     }
     
-    // Close modal when clicking outside the image
+    // Close modal when clicking outside the image (on the dark background)
     if (modal) {
         modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                closeModal();
+            // Only close if clicking directly on the modal background, not on children
+            // Check if the click target is the modal itself or the backdrop
+            if (e.target === modal || (e.target.classList && e.target.classList.contains('photo-modal'))) {
+                // Make sure we're not clicking on the close button or its children
+                if (!e.target.closest('.modal-close')) {
+                    closeModal(e);
+                }
             }
+        });
+    }
+    
+    // Prevent modal content from closing the modal when clicked
+    if (modalImg) {
+        modalImg.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    }
+    
+    if (modalCaption) {
+        modalCaption.addEventListener('click', function(e) {
+            e.stopPropagation();
         });
     }
     
     // Close modal with ESC key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
-            closeModal();
+            closeModal(e);
         }
     });
 });
@@ -371,10 +410,13 @@ function createFloatingPhotos() {
         // Make photos clickable to open in modal
         photoDiv.addEventListener('click', function() {
             if (modal && modalImg && modalCaption) {
-                modal.style.display = 'flex';
                 modalImg.src = photoSrc;
                 modalImg.alt = img.alt;
                 modalCaption.textContent = '';
+                modal.style.display = 'flex';
+                
+                // Force reflow to ensure display is applied before adding active class
+                void modal.offsetHeight;
                 
                 setTimeout(() => {
                     modal.classList.add('active');
