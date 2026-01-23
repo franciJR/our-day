@@ -633,13 +633,9 @@ img {
     max-width: 800px;
     margin: 0 auto;
     position: relative;
-    padding: 3rem 2rem;
+    padding: 0 2rem;
     z-index: 10;
-    background: rgba(255, 254, 240, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(253, 245, 230, 0.5);
+    text-align: center;
     opacity: 0;
     transform: translateY(40px);
     transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
@@ -658,39 +654,44 @@ img {
     font-weight: 600;
     color: #6B4423;
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     letter-spacing: 2px;
     line-height: 1.3;
 }
 
 .story-paragraph {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.3rem;
-    line-height: 2;
+    font-size: 1.2rem;
+    line-height: 1.8;
     color: var(--dark-grey);
     margin-bottom: 2rem;
     font-weight: 400;
     text-align: center;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .story-date {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 600;
     color: #6B4423;
     display: block;
     margin-bottom: 0.5rem;
+    text-align: center;
 }
 
 .story-location {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-style: italic;
     color: #6B4423;
     display: block;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
 }
 
 .story-ending {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-style: italic;
     text-align: center;
     margin-top: 3rem;
@@ -698,6 +699,9 @@ img {
     border-top: 1px solid rgba(107, 68, 35, 0.2);
     color: #6B4423;
     font-weight: 500;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Footer */
@@ -1129,7 +1133,7 @@ html {
     }
     
     .love-story-text {
-        padding: 2rem 1.5rem;
+        padding: 0 1.5rem;
         max-width: 95%;
     }
     
@@ -1324,7 +1328,7 @@ html {
     }
     
     .love-story-text {
-        padding: 1.5rem 1rem;
+        padding: 0 1rem;
         max-width: 98%;
     }
     
