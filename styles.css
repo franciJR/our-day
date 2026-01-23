@@ -491,7 +491,7 @@ body:not(.js-loaded) .ceremony-item {
     font-weight: 300;
     cursor: pointer;
     transition: transform 0.3s ease, color 0.3s ease;
-    z-index: 2001;
+    z-index: 2002 !important;
     line-height: 1;
     width: 50px;
     height: 50px;
@@ -501,6 +501,8 @@ body:not(.js-loaded) .ceremony-item {
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
+    pointer-events: auto !important;
+    user-select: none;
 }
 
 .modal-close:hover {

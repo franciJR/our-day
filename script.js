@@ -296,7 +296,12 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             e.stopPropagation();
         }
-        if (!modal) return;
+        if (!modal) {
+            console.error('Modal element not found!');
+            return;
+        }
+        
+        console.log('Closing modal...'); // Debug log
         
         // Remove active class immediately
         modal.classList.remove('active');
@@ -310,18 +315,49 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (modalImg) {
                     modalImg.src = '';
                 }
+                console.log('Modal closed'); // Debug log
             }
         }, 400);
     }
     
-    // Close modal when clicking the X button
+    // Close modal when clicking the X button - use multiple methods to ensure it works
     if (closeBtn) {
+        console.log('Close button found, attaching handlers'); // Debug log
+        
+        // Method 1: Direct onclick
         closeBtn.onclick = function(e) {
+            console.log('Close button clicked (onclick)'); // Debug log
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            closeModal(e);
+            return false;
+        };
+        
+        // Method 2: addEventListener as backup
+        closeBtn.addEventListener('click', function(e) {
+            console.log('Close button clicked (addEventListener)'); // Debug log
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            closeModal(e);
+            return false;
+        }, true); // Use capture phase
+        
+        // Method 3: mousedown as additional backup
+        closeBtn.addEventListener('mousedown', function(e) {
+            console.log('Close button mousedown'); // Debug log
             e.preventDefault();
             e.stopPropagation();
             closeModal(e);
             return false;
-        };
+        });
+        
+        // Test if button is clickable
+        closeBtn.style.pointerEvents = 'auto';
+        closeBtn.style.cursor = 'pointer';
+    } else {
+        console.error('Close button element not found! Modal:', modal);
     }
     
     // Close modal when clicking outside the image (on the dark background)
