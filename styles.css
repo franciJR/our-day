@@ -368,13 +368,13 @@ img {
                 transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Fallback: show content if JavaScript hasn't loaded after 1 second */
-body:not(.js-loaded) .ceremony-item {
-    opacity: 1;
-    transform: translateY(0);
+.ceremony-item.animate {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
 }
 
-.ceremony-item.animate {
+/* Fallback: show content if JavaScript hasn't loaded after 1 second */
+body:not(.js-loaded) .ceremony-item {
     opacity: 1;
     transform: translateY(0);
 }
@@ -649,7 +649,12 @@ body:not(.js-loaded) .ceremony-item {
     visibility: visible;
 }
 
-/* Fallback: show content if JavaScript hasn't loaded after 1 second */
+.love-story-text.animate {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+/* Fallback: show content if JavaScript hasn't loaded */
 body:not(.js-loaded) .love-story-text {
     opacity: 1;
     transform: translateY(0);

@@ -152,14 +152,14 @@ document.addEventListener('DOMContentLoaded', () => {
         
         storyTextObserver.observe(loveStoryText);
         
-        // Also check if already in viewport on load
-        setTimeout(() => {
+        // Check if already in viewport on load and animate immediately
+        requestAnimationFrame(() => {
             const rect = loveStoryText.getBoundingClientRect();
-            const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+            const isInViewport = rect.top < window.innerHeight * 0.9 && rect.bottom > 0;
             if (isInViewport) {
                 loveStoryText.classList.add('animate');
             }
-        }, 100);
+        });
     }
     
     // Ceremony animations
@@ -168,15 +168,15 @@ document.addEventListener('DOMContentLoaded', () => {
         ceremonyObserver.observe(el);
         
         // Check if already in viewport on load and animate immediately
-        setTimeout(() => {
+        requestAnimationFrame(() => {
             const rect = el.getBoundingClientRect();
-            const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+            const isInViewport = rect.top < window.innerHeight * 0.9 && rect.bottom > 0;
             if (isInViewport) {
                 setTimeout(() => {
                     el.classList.add('animate');
                 }, index * 200);
             }
-        }, 100);
+        });
     });
     
     // Artistic photos - smooth animations and clickable
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Check if artistic photos section is already in viewport on load
-    setTimeout(() => {
+    requestAnimationFrame(() => {
         const artisticPhotosSection = document.querySelector('.artistic-photos-section');
         if (artisticPhotosSection) {
             const rect = artisticPhotosSection.getBoundingClientRect();
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 animateArtisticPhotos();
             }
         }
-    }, 400);
+    });
     
     // Observe the photos section
     const artisticPhotosSection = document.querySelector('.artistic-photos-section');
