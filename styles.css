@@ -275,19 +275,19 @@ img {
 }
 
 .hero-image-content .hero-names .name {
-    font-family: 'Amatic SC', cursive;
+    font-family: 'Allura', cursive;
     font-size: 5.5rem;
-    font-weight: 700;
+    font-weight: 400;
     color: #6B4423;
-    letter-spacing: 4px;
-    text-transform: capitalize;
+    letter-spacing: 2px;
+    text-transform: none;
 }
 
 .hero-image-content .hero-names .ampersand {
-    font-family: 'Amatic SC', cursive;
+    font-family: 'Allura', cursive;
     font-size: 3rem;
     color: var(--gold-accent);
-    font-weight: 700;
+    font-weight: 400;
 }
 
 .hero-image-content .hero-date {
@@ -977,7 +977,7 @@ html {
     }
     
     .hero-image-content .hero-names .name {
-        font-family: 'Amatic SC', cursive;
+        font-family: 'Allura', cursive;
         font-size: 4.5rem;
     }
     
@@ -1134,14 +1134,15 @@ html {
     }
     
     .hero-image-content .hero-names .name {
-        font-family: 'Amatic SC', cursive;
+        font-family: 'Allura', cursive;
         font-size: 3rem;
         color: #6B4423;
         text-shadow: none;
+        text-transform: none;
     }
     
     .hero-image-content .hero-names .ampersand {
-        font-family: 'Amatic SC', cursive;
+        font-family: 'Allura', cursive;
         font-size: 1.8rem;
         color: var(--gold-accent);
         text-shadow: none;
@@ -1489,14 +1490,15 @@ html {
     }
     
     .hero-image-content .hero-names .name {
-        font-family: 'Amatic SC', cursive;
+        font-family: 'Allura', cursive;
         font-size: 2.2rem;
         letter-spacing: 1px;
         color: #6B4423;
+        text-transform: none;
     }
     
     .hero-image-content .hero-names .ampersand {
-        font-family: 'Amatic SC', cursive;
+        font-family: 'Allura', cursive;
         font-size: 1.5rem;
         color: var(--gold-accent);
     }
