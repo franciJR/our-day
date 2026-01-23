@@ -819,7 +819,22 @@ img {
 
 .artistic-photo-small.animate {
     opacity: 1;
-    transform: translateY(0);
+}
+
+.artistic-photo-small.photo-1.animate {
+    transform: translateY(0) rotate(-1.5deg);
+}
+
+.artistic-photo-small.photo-2.animate {
+    transform: translateY(0) rotate(1deg);
+}
+
+.artistic-photo-small.photo-3.animate {
+    transform: translateY(0) rotate(-0.8deg);
+}
+
+.artistic-photo-small.photo-4.animate {
+    transform: translateY(0) rotate(1.2deg);
 }
 
 .artistic-photo-small img {
@@ -1138,23 +1153,39 @@ html {
     }
     
     .artistic-photos-container {
-        align-items: center;
-        gap: 2.5rem;
+        min-height: 700px;
     }
     
     .artistic-photo-main {
-        width: 400px;
-        height: 520px;
+        width: 380px;
+        height: 490px;
+        right: 5%;
     }
     
-    .artistic-photos-grid {
-        gap: 1.5rem;
-        justify-content: center;
+    .artistic-photos-collection {
+        bottom: 3%;
+        right: 5%;
+        gap: 1.2rem;
     }
     
-    .artistic-photo-small {
-        width: 220px;
-        height: 275px;
+    .artistic-photo-small.photo-1 {
+        width: 200px;
+        height: 250px;
+    }
+    
+    .artistic-photo-small.photo-2 {
+        width: 215px;
+        height: 270px;
+    }
+    
+    .artistic-photo-small.photo-3 {
+        width: 205px;
+        height: 260px;
+    }
+    
+    .artistic-photo-small.photo-4 {
+        width: 200px;
+        height: 250px;
     }
     
     .ceremony-item {
