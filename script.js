@@ -144,38 +144,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Artistic photos - smooth animations and clickable
-    const artisticPhotoMain = document.querySelector('.artistic-photo-main');
-    const artisticPhotosSmall = document.querySelectorAll('.artistic-photo-small');
-    const artisticDecorativeLeaf = document.querySelector('.artistic-decorative-leaf');
-    const allArtisticPhotos = [artisticPhotoMain, ...Array.from(artisticPhotosSmall)].filter(Boolean);
+    const artisticPhotos = document.querySelectorAll('.artistic-photo');
     
     // Animate photos with staggered effect
     function animateArtisticPhotos() {
-        // Animate decorative leaf first
-        if (artisticDecorativeLeaf) {
-            artisticDecorativeLeaf.classList.remove('animate');
-            void artisticDecorativeLeaf.offsetHeight;
-            setTimeout(() => {
-                artisticDecorativeLeaf.classList.add('animate');
-            }, 100);
-        }
-        
-        // Animate main photo second
-        if (artisticPhotoMain) {
-            artisticPhotoMain.classList.remove('animate');
-            void artisticPhotoMain.offsetHeight;
-            setTimeout(() => {
-                artisticPhotoMain.classList.add('animate');
-            }, 300);
-        }
-        
-        // Then animate small photos with staggered timing
-        artisticPhotosSmall.forEach((photo, index) => {
+        artisticPhotos.forEach((photo, index) => {
             photo.classList.remove('animate');
+            // Trigger reflow
             void photo.offsetHeight;
+            // Add animate class with staggered timing
             setTimeout(() => {
                 photo.classList.add('animate');
-            }, 600 + (index * 150));
+            }, index * 300);
         });
     }
     
@@ -186,17 +166,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 animateArtisticPhotos();
             } else {
                 // Fade out when leaving center viewport
-                if (artisticDecorativeLeaf) {
-                    artisticDecorativeLeaf.classList.remove('animate');
-                }
-                allArtisticPhotos.forEach(photo => {
-                    if (photo) photo.classList.remove('animate');
+                artisticPhotos.forEach(photo => {
+                    photo.classList.remove('animate');
                 });
             }
         });
     }, {
         threshold: 0.2,
-        rootMargin: '-20% 0px -20% 0px'
+        rootMargin: '-30% 0px -30% 0px' // Only show when in center viewport
     });
     
     // Observe the photos section
@@ -206,31 +183,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Make photos clickable to open in modal
-    const modal = document.getElementById('photoModal');
-    const modalImg = document.getElementById('modalImage');
-    const modalCaption = document.getElementById('modalCaption');
-    
-    if (modal && modalImg && modalCaption) {
-        allArtisticPhotos.forEach(photo => {
-            if (photo) {
-                photo.addEventListener('click', function() {
-                    const img = this.querySelector('img');
-                    if (img) {
-                        modal.style.display = 'flex';
-                        modalImg.src = img.src;
-                        modalImg.alt = img.alt;
-                        modalCaption.textContent = '';
-                        
-                        setTimeout(() => {
-                            modal.classList.add('active');
-                        }, 10);
-                        
-                        document.body.style.overflow = 'hidden';
-                    }
-                });
+    artisticPhotos.forEach(photo => {
+        // Make photos clickable to open in modal
+        photo.addEventListener('click', function() {
+            const img = this.querySelector('img');
+            if (img && modal && modalImg && modalCaption) {
+                modal.style.display = 'flex';
+                modalImg.src = img.src;
+                modalImg.alt = img.alt;
+                modalCaption.textContent = '';
+                
+                setTimeout(() => {
+                    modal.classList.add('active');
+                }, 10);
+                
+                document.body.style.overflow = 'hidden';
             }
         });
-    }
+    });
 });
 
 // Navbar background on scroll
