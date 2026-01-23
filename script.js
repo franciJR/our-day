@@ -103,7 +103,32 @@ document.addEventListener('DOMContentLoaded', () => {
     // Love story text animation
     const loveStoryText = document.querySelector('.love-story-text');
     if (loveStoryText) {
-        timelineObserver.observe(loveStoryText);
+        // Use a more lenient observer for story text
+        const storyObserverOptions = {
+            threshold: 0.1,
+            rootMargin: '-20% 0px -20% 0px'
+        };
+        
+        const storyTextObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                } else {
+                    entry.target.classList.remove('animate');
+                }
+            });
+        }, storyObserverOptions);
+        
+        storyTextObserver.observe(loveStoryText);
+        
+        // Also check if already in viewport on load
+        setTimeout(() => {
+            const rect = loveStoryText.getBoundingClientRect();
+            const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+            if (isInViewport && !loveStoryText.classList.contains('animate')) {
+                loveStoryText.classList.add('animate');
+            }
+        }, 100);
     }
     
     // Ceremony animations
