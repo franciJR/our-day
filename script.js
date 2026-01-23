@@ -286,68 +286,45 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+    
+    // Close modal functions
+    function closeModal() {
+        if (modal) {
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }, 400);
+        }
+    }
+    
+    // Close modal when clicking the X button
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeModal);
+    }
+    
+    // Close modal when clicking outside the image
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    }
+    
+    // Close modal with ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
 });
 
 // Navbar background on scroll - will be initialized in DOMContentLoaded
 let navbar;
 
-// Open modal when photo is clicked
-document.addEventListener('DOMContentLoaded', () => {
-    const photoItems = document.querySelectorAll('.photo-item');
-    photoItems.forEach(item => {
-        item.addEventListener('click', function() {
-            const img = this.querySelector('img');
-            const caption = this.querySelector('.photo-caption');
-            
-            modal.style.display = 'flex';
-            modalImg.src = img.src;
-            modalImg.alt = img.alt;
-            modalCaption.textContent = caption ? caption.textContent : '';
-            
-            // Trigger animation
-            setTimeout(() => {
-                modal.classList.add('active');
-            }, 10);
-            
-            // Prevent body scroll when modal is open
-            document.body.style.overflow = 'hidden';
-        });
-    });
-});
+// Open modal when photo is clicked - moved inside main DOMContentLoaded
 
-// Close modal functions
-function closeModal() {
-    if (modal) {
-        modal.classList.remove('active');
-        setTimeout(() => {
-            modal.style.display = 'none';
-            document.body.style.overflow = '';
-        }, 400);
-    }
-}
-
-// Close modal when clicking the X button
-if (closeBtn) {
-    closeBtn.addEventListener('click', closeModal);
-}
-
-// Close modal when clicking outside the image
-if (modal) {
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
-}
-
-// Close modal with ESC key
-if (modal) {
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.classList.contains('active')) {
-            closeModal();
-        }
-    });
-}
 
 // Floating Photos Animation
 const imagePhotos = [
@@ -393,16 +370,18 @@ function createFloatingPhotos() {
         
         // Make photos clickable to open in modal
         photoDiv.addEventListener('click', function() {
-            modal.style.display = 'flex';
-            modalImg.src = photoSrc;
-            modalImg.alt = img.alt;
-            modalCaption.textContent = '';
-            
-            setTimeout(() => {
-                modal.classList.add('active');
-            }, 10);
-            
-            document.body.style.overflow = 'hidden';
+            if (modal && modalImg && modalCaption) {
+                modal.style.display = 'flex';
+                modalImg.src = photoSrc;
+                modalImg.alt = img.alt;
+                modalCaption.textContent = '';
+                
+                setTimeout(() => {
+                    modal.classList.add('active');
+                }, 10);
+                
+                document.body.style.overflow = 'hidden';
+            }
         });
         
         container.appendChild(photoDiv);
