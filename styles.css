@@ -291,12 +291,12 @@ img {
 }
 
 .hero-image-content .hero-date {
+    font-family: 'Bellefair', serif;
     font-size: 2.5rem;
     color: var(--dark-grey);
     letter-spacing: 3px;
     margin: 2rem 0;
     font-weight: 300;
-    font-family: 'Cormorant Garamond', serif;
 }
 
 /* Container */
@@ -399,7 +399,7 @@ body:not(.js-loaded) .ceremony-item {
 }
 
 .ceremony-date {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Bellefair', serif;
     font-size: 1.1rem;
     color: var(--dark-grey);
     font-weight: 400;
@@ -692,6 +692,7 @@ body:not(.js-loaded) .love-story-text {
 }
 
 .story-date {
+    font-family: 'Bellefair', serif;
     font-size: 1.3rem;
     font-weight: 600;
     color: #6B4423;
