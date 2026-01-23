@@ -280,7 +280,7 @@ img {
     font-weight: 700;
     color: #6B4423;
     letter-spacing: 4px;
-    text-transform: uppercase;
+    text-transform: capitalize;
 }
 
 .hero-image-content .hero-names .ampersand {
@@ -432,6 +432,10 @@ body:not(.js-loaded) .ceremony-item {
     line-height: 1.8;
     margin-top: 0.5rem;
     font-weight: 300;
+}
+
+.ceremony-address .zip-code {
+    font-family: 'Bellefair', serif;
 }
 
 /* Photo Modal/Lightbox */
