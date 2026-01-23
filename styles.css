@@ -362,10 +362,16 @@ img {
     text-align: center;
     margin-bottom: 5rem;
     padding: 0 2rem;
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 0;
+    transform: translateY(40px);
     transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
                 transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Fallback: show content if JavaScript hasn't loaded after 1 second */
+body:not(.js-loaded) .ceremony-item {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .ceremony-item.animate {
@@ -636,11 +642,17 @@ img {
     padding: 0 2rem;
     z-index: 10;
     text-align: center;
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 0;
+    transform: translateY(40px);
     transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
                 transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     visibility: visible;
+}
+
+/* Fallback: show content if JavaScript hasn't loaded after 1 second */
+body:not(.js-loaded) .love-story-text {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .love-story-text.animate {

@@ -134,11 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Love story text animation
     const loveStoryText = document.querySelector('.love-story-text');
     if (loveStoryText) {
-        // Ensure it has animate class to keep it visible
-        if (!loveStoryText.classList.contains('animate')) {
-            loveStoryText.classList.add('animate');
-        }
-        
         // Use a more lenient observer for story text
         const storyObserverOptions = {
             threshold: 0.1,
@@ -170,11 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ceremony animations
     const ceremonyItems = document.querySelectorAll('.ceremony-item');
     ceremonyItems.forEach((el, index) => {
-        // Ensure it has animate class to keep it visible
-        if (!el.classList.contains('animate')) {
-            el.classList.add('animate');
-        }
-        
         ceremonyObserver.observe(el);
         
         // Check if already in viewport on load and animate immediately
