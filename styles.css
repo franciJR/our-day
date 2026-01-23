@@ -670,8 +670,7 @@ img {
     color: var(--dark-grey);
     margin-bottom: 2rem;
     font-weight: 400;
-    text-align: justify;
-    text-align-last: left;
+    text-align: center;
 }
 
 .story-date {
