@@ -330,10 +330,11 @@ img {
 
 .ceremonies-title {
     font-family: 'Great Vibes', cursive;
-    font-size: 3.5rem;
+    font-size: 4.5rem;
     font-weight: 400;
     letter-spacing: 3px;
     color: #6B4423;
+    margin-bottom: 2rem;
 }
 
 .story-title {
@@ -444,7 +445,7 @@ body:not(.js-loaded) .ceremony-item {
 
 .ceremony-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 2.5rem;
+    font-size: 3.8rem;
     font-weight: 700;
     color: #6B4423;
     margin-bottom: 1.5rem;
@@ -1238,6 +1239,10 @@ html {
         font-size: 2.2rem;
     }
     
+    .ceremonies-title {
+        font-size: 3.5rem;
+    }
+    
     .story-title {
         font-size: 3rem;
     }
@@ -1322,7 +1327,7 @@ html {
     }
     
     .ceremony-title {
-        font-size: 2rem;
+        font-size: 3rem;
     }
     
     .ceremony-subsection {
@@ -1646,6 +1651,10 @@ html {
         letter-spacing: 1px;
     }
     
+    .ceremonies-title {
+        font-size: 2.8rem;
+    }
+    
     .story-title {
         font-size: 2.5rem;
     }
@@ -1670,7 +1679,7 @@ html {
     }
     
     .ceremony-title {
-        font-size: 1.8rem;
+        font-size: 2.5rem;
         margin-bottom: 1.2rem;
     }
     
