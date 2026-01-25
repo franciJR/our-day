@@ -329,12 +329,13 @@ img {
 }
 
 .ceremonies-title {
-    font-family: 'Great Vibes', cursive;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 6rem;
-    font-weight: 400;
-    letter-spacing: 3px;
+    font-weight: 600;
+    letter-spacing: 4px;
     color: #6B4423;
     margin-bottom: 2rem;
+    font-style: normal;
 }
 
 .story-title {
