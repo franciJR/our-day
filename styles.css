@@ -397,6 +397,51 @@ body:not(.js-loaded) .ceremony-item {
     margin-bottom: 0;
 }
 
+/* Subsection styling - makes RECEPTION & MYLANCHI appear as part of ENGAGEMENT */
+.ceremony-subsection {
+    margin-top: -2rem;
+    margin-bottom: 4rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    position: relative;
+}
+
+.ceremony-subsection::before {
+    content: '';
+    position: absolute;
+    left: 1.5rem;
+    top: -1rem;
+    bottom: -1rem;
+    width: 2px;
+    background: linear-gradient(to bottom, rgba(107, 68, 35, 0.3), rgba(107, 68, 35, 0.1));
+}
+
+.ceremony-subtitle {
+    font-size: 1.8rem !important;
+    font-weight: 500 !important;
+    color: #8B6F47 !important;
+    margin-bottom: 1rem !important;
+    text-transform: uppercase;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.ceremony-subtitle::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--gold-accent);
+    font-size: 1.5rem;
+}
+
+.ceremony-subsection .ceremony-date,
+.ceremony-subsection .ceremony-time,
+.ceremony-subsection .ceremony-venue,
+.ceremony-subsection .ceremony-address {
+    font-size: 0.95rem;
+    padding-left: 1.5rem;
+}
+
 .ceremony-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2.5rem;
@@ -1280,6 +1325,29 @@ html {
         font-size: 2rem;
     }
     
+    .ceremony-subsection {
+        margin-top: -1.5rem;
+        margin-bottom: 3.5rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+    
+    .ceremony-subsection::before {
+        left: 1rem;
+    }
+    
+    .ceremony-subtitle {
+        font-size: 1.5rem !important;
+        padding-left: 1.2rem;
+    }
+    
+    .ceremony-subsection .ceremony-date,
+    .ceremony-subsection .ceremony-time,
+    .ceremony-subsection .ceremony-venue,
+    .ceremony-subsection .ceremony-address {
+        padding-left: 1.2rem;
+    }
+    
     .ceremony-date,
     .ceremony-time {
         font-family: 'Bellefair', serif;
@@ -1604,6 +1672,54 @@ html {
     .ceremony-title {
         font-size: 1.8rem;
         margin-bottom: 1.2rem;
+    }
+    
+    .ceremony-subsection {
+        margin-top: -1rem;
+        margin-bottom: 3rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+    
+    .ceremony-subsection::before {
+        left: 0.8rem;
+    }
+    
+    .ceremony-subtitle {
+        font-size: 1.3rem !important;
+        padding-left: 1rem;
+    }
+    
+    .ceremony-subsection .ceremony-date,
+    .ceremony-subsection .ceremony-time,
+    .ceremony-subsection .ceremony-venue,
+    .ceremony-subsection .ceremony-address {
+        font-size: 0.9rem;
+        padding-left: 1rem;
+    }
+    
+    .ceremony-subsection {
+        margin-top: -1rem;
+        margin-bottom: 3rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+    
+    .ceremony-subsection::before {
+        left: 0.8rem;
+    }
+    
+    .ceremony-subtitle {
+        font-size: 1.3rem !important;
+        padding-left: 1rem;
+    }
+    
+    .ceremony-subsection .ceremony-date,
+    .ceremony-subsection .ceremony-time,
+    .ceremony-subsection .ceremony-venue,
+    .ceremony-subsection .ceremony-address {
+        font-size: 0.9rem;
+        padding-left: 1rem;
     }
     
     .ceremony-date,
