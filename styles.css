@@ -15,6 +15,17 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'Bickham Script Pro';
+    src: url('font/Bickham Script Pro.otf') format('opentype'),
+         url('font/Bickham Script Pro.ttf') format('truetype'),
+         url('font/BickhamScriptPro-Regular.otf') format('opentype'),
+         url('font/BickhamScriptPro-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -337,7 +348,7 @@ img {
 }
 
 .ceremonies-title {
-    font-family: 'IM Fell English', serif;
+    font-family: 'Cormorant SC', serif;
     font-size: 3.5rem;
     font-weight: 400;
     letter-spacing: 3px;
