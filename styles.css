@@ -355,6 +355,37 @@ img {
     color: #6B4423;
     margin-bottom: 2rem;
     font-style: normal;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 1.5rem;
+}
+
+.ceremonies-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(to right, 
+        transparent 0%, 
+        rgba(107, 68, 35, 0.3) 20%, 
+        rgba(107, 68, 35, 0.6) 50%, 
+        rgba(107, 68, 35, 0.3) 80%, 
+        transparent 100%);
+    animation: fadeInUnderline 1.5s ease-out forwards;
+}
+
+@keyframes fadeInUnderline {
+    from {
+        opacity: 0;
+        width: 0%;
+    }
+    to {
+        opacity: 1;
+        width: 60%;
+    }
 }
 
 .story-title {
