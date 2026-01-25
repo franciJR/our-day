@@ -508,8 +508,32 @@ body:not(.js-loaded) .ceremony-item {
 }
 
 .ceremony-subsection::before {
-    content: none !important;
-    display: none !important;
+    content: '';
+    position: absolute;
+    top: -2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 2.5rem;
+    background: linear-gradient(to bottom, 
+        rgba(107, 68, 35, 0.4) 0%, 
+        rgba(107, 68, 35, 0.3) 30%,
+        rgba(107, 68, 35, 0.2) 60%,
+        rgba(107, 68, 35, 0.1) 80%,
+        transparent 100%);
+    animation: fadeInLine 1.2s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInLine {
+    from {
+        opacity: 0;
+        height: 0;
+    }
+    to {
+        opacity: 1;
+        height: 2.5rem;
+    }
 }
 
 .ceremony-subtitle {
