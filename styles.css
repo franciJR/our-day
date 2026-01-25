@@ -337,13 +337,14 @@ img {
 }
 
 .ceremonies-title {
-    font-family: 'Moralana DEMO', serif;
-    font-size: 6rem;
-    font-weight: normal;
-    letter-spacing: 4px;
+    font-family: 'EB Garamond', serif;
+    font-size: 4.5rem;
+    font-weight: 500;
+    letter-spacing: 3px;
     color: #6B4423;
     margin-bottom: 2rem;
     font-style: normal;
+    white-space: nowrap;
 }
 
 .story-title {
@@ -1242,6 +1243,7 @@ html {
     
     .ceremonies-title {
         font-size: 3.5rem;
+        white-space: nowrap;
     }
     
     .story-title {
@@ -1654,7 +1656,8 @@ html {
     }
     
     .ceremonies-title {
-        font-size: 3.5rem;
+        font-size: 2.8rem;
+        white-space: nowrap;
     }
     
     .story-title {
