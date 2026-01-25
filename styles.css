@@ -493,7 +493,7 @@ body:not(.js-loaded) .ceremony-item {
 .ceremony-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 4.2rem;
-    font-weight: 700;
+    font-weight: 400;
     color: #6B4423;
     margin-bottom: 1.5rem;
     letter-spacing: 2px;
