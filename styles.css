@@ -44,6 +44,95 @@
     --gold-accent: #C9A961;
 }
 
+/* Decorative Love Hearts */
+.decorative-hearts {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.heart {
+    position: absolute;
+    color: rgba(201, 169, 97, 0.15);
+    font-size: 1.5rem;
+    opacity: 0;
+    animation: heartFloat 8s ease-in-out infinite;
+    user-select: none;
+}
+
+.heart-1 {
+    top: 15%;
+    left: 8%;
+    animation-delay: 0s;
+}
+
+.heart-2 {
+    top: 25%;
+    right: 10%;
+    animation-delay: 1s;
+    font-size: 1.2rem;
+}
+
+.heart-3 {
+    top: 45%;
+    left: 5%;
+    animation-delay: 2s;
+    font-size: 1.8rem;
+}
+
+.heart-4 {
+    top: 55%;
+    right: 8%;
+    animation-delay: 3s;
+    font-size: 1.3rem;
+}
+
+.heart-5 {
+    top: 70%;
+    left: 12%;
+    animation-delay: 4s;
+    font-size: 1.4rem;
+}
+
+.heart-6 {
+    top: 80%;
+    right: 15%;
+    animation-delay: 5s;
+    font-size: 1.1rem;
+}
+
+.heart-7 {
+    top: 35%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation-delay: 6s;
+    font-size: 1.6rem;
+}
+
+.heart-8 {
+    top: 65%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation-delay: 7s;
+    font-size: 1.2rem;
+}
+
+@keyframes heartFloat {
+    0%, 100% {
+        opacity: 0;
+        transform: translateY(0) rotate(0deg) scale(0.8);
+    }
+    50% {
+        opacity: 0.3;
+        transform: translateY(-20px) rotate(10deg) scale(1);
+    }
+}
+
 body {
     font-family: 'Lato', sans-serif;
     color: var(--dark-grey);
@@ -173,6 +262,7 @@ img {
     width: 100%;
     position: relative;
     overflow: hidden;
+    z-index: 2;
 }
 
 .hero-image-wrapper {
@@ -459,6 +549,7 @@ img {
     padding: 6rem 0;
     position: relative;
     background: var(--ivory-light);
+    z-index: 2;
 }
 
 .ceremonies-timeline {
@@ -516,12 +607,12 @@ body:not(.js-loaded) .ceremony-item {
     width: 2px;
     height: 2.5rem;
     background: linear-gradient(to bottom, 
-        rgba(107, 68, 35, 0.4) 0%, 
-        rgba(107, 68, 35, 0.3) 30%,
-        rgba(107, 68, 35, 0.2) 60%,
-        rgba(107, 68, 35, 0.1) 80%,
+        rgba(107, 68, 35, 0.6) 0%, 
+        rgba(107, 68, 35, 0.5) 30%,
+        rgba(107, 68, 35, 0.4) 60%,
+        rgba(107, 68, 35, 0.2) 80%,
         transparent 100%);
-    animation: fadeInLine 1.2s ease-out forwards;
+    animation: fadeInLine 1.2s ease-out 0.5s forwards;
     opacity: 0;
 }
 
@@ -720,6 +811,7 @@ body:not(.js-loaded) .ceremony-item {
     padding: 6rem 0;
     position: relative;
     background: var(--ivory-light);
+    z-index: 2;
 }
 
 .story-content {
@@ -905,6 +997,7 @@ body:not(.js-loaded) .love-story-text {
     padding: 6rem 0;
     background: var(--ivory-light);
     position: relative;
+    z-index: 2;
     overflow: hidden;
 }
 
@@ -1454,8 +1547,8 @@ html {
     }
     
     .ceremony-subsection::before {
-        content: none !important;
-        display: none !important;
+        top: -2rem;
+        height: 2rem;
     }
     
     .ceremony-subtitle {
@@ -1808,8 +1901,8 @@ html {
     }
     
     .ceremony-subsection::before {
-        content: none !important;
-        display: none !important;
+        top: -2rem;
+        height: 2rem;
     }
     
     .ceremony-subtitle {
@@ -1833,8 +1926,8 @@ html {
     }
     
     .ceremony-subsection::before {
-        content: none !important;
-        display: none !important;
+        top: -2rem;
+        height: 2rem;
     }
     
     .ceremony-subtitle {
@@ -2120,6 +2213,15 @@ html {
     
     .footer-text {
         font-size: 0.9rem;
+    }
+    
+    /* Reduce heart visibility on small mobile */
+    .heart {
+        font-size: 1rem;
+    }
+    
+    .heart-1, .heart-2, .heart-3, .heart-4, .heart-5, .heart-6, .heart-7, .heart-8 {
+        font-size: 1rem;
     }
 }
 
