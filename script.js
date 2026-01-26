@@ -700,5 +700,62 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize floating photos
     createFloatingPhotos();
     startFloatingPhotoLoop();
+    
+    // Background Music Control
+    const backgroundMusic = document.getElementById('background-music');
+    const musicControlBtn = document.getElementById('music-control');
+    let isPlaying = false;
+    
+    // Start playing music after 2 seconds
+    setTimeout(() => {
+        if (backgroundMusic && musicControlBtn) {
+            backgroundMusic.volume = 0.5; // Set volume to 50%
+            backgroundMusic.play().then(() => {
+                isPlaying = true;
+                musicControlBtn.classList.add('playing');
+            }).catch(error => {
+                console.log('Autoplay prevented. User interaction required.');
+                // If autoplay is prevented, wait for user interaction
+                isPlaying = false;
+            });
+        }
+    }, 2000);
+    
+    // Toggle play/pause on button click
+    if (musicControlBtn) {
+        musicControlBtn.addEventListener('click', () => {
+            if (backgroundMusic) {
+                if (isPlaying) {
+                    backgroundMusic.pause();
+                    isPlaying = false;
+                    musicControlBtn.classList.remove('playing');
+                } else {
+                    backgroundMusic.play().then(() => {
+                        isPlaying = true;
+                        musicControlBtn.classList.add('playing');
+                    }).catch(error => {
+                        console.log('Play failed:', error);
+                    });
+                }
+            }
+        });
+    }
+    
+    // Update button state when music ends or is paused by browser
+    if (backgroundMusic) {
+        backgroundMusic.addEventListener('pause', () => {
+            isPlaying = false;
+            if (musicControlBtn) {
+                musicControlBtn.classList.remove('playing');
+            }
+        });
+        
+        backgroundMusic.addEventListener('play', () => {
+            isPlaying = true;
+            if (musicControlBtn) {
+                musicControlBtn.classList.add('playing');
+            }
+        });
+    }
 });
 
