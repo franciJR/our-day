@@ -858,7 +858,7 @@ function initializeWishes() {
         if (wishes.length === 0) {
             // Show default sample wish if no wishes exist
             wishes = [{
-                name: 'Sample Wish',
+                name: '',
                 message: 'May your love story be as beautiful as your wedding day. Wishing you both a lifetime of happiness and joy together. ❤️',
                 date: new Date().toISOString()
             }];
@@ -874,10 +874,11 @@ function initializeWishes() {
         wishes.forEach((wish, index) => {
             const slide = document.createElement('div');
             slide.className = `wish-slide ${index === currentWishIndex ? 'active' : ''}`;
+            const authorHtml = wish.name ? `<p class="wish-author">— ${escapeHtml(wish.name)}</p>` : '';
             slide.innerHTML = `
                 <div class="wish-card">
                     <p class="wish-message">${escapeHtml(wish.message)}</p>
-                    <p class="wish-author">— ${escapeHtml(wish.name)}</p>
+                    ${authorHtml}
                 </div>
             `;
             wishesSlideshow.appendChild(slide);
@@ -994,7 +995,7 @@ function initializeWishes() {
             };
             
             // Remove sample wish if it exists and this is the first real wish
-            if (wishes.length === 1 && wishes[0].name === 'Sample Wish') {
+            if (wishes.length === 1 && wishes[0].name === '') {
                 wishes = [];
             }
             
