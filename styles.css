@@ -655,38 +655,40 @@ body:not(.js-loaded) .ceremony-item {
     align-items: center;
     justify-content: center;
     margin-top: 1.5rem;
-    padding: 0.75rem 1.5rem;
-    background: rgba(255, 254, 240, 0.8);
-    border: 2px solid rgba(107, 68, 35, 0.3);
-    border-radius: 8px;
-    color: rgba(107, 68, 35, 0.85);
+    padding: 0.85rem 1.8rem;
+    background: rgba(255, 254, 240, 0.9);
+    border: 2.5px solid rgba(107, 68, 35, 0.4);
+    border-radius: 50px;
+    color: rgba(107, 68, 35, 0.9);
     font-family: 'Lato', sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 500;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     text-decoration: none;
     text-transform: none;
     transition: all 0.3s ease;
     cursor: pointer;
     position: relative;
-    gap: 0.5rem;
+    gap: 0.6rem;
     backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(107, 68, 35, 0.08);
 }
 
 .map-icon {
     display: inline-block;
-    font-size: 1.1rem;
-    filter: sepia(100%) saturate(200%) hue-rotate(15deg) brightness(0.6);
+    font-size: 1.2rem;
+    filter: sepia(100%) saturate(200%) hue-rotate(15deg) brightness(0.55);
     vertical-align: middle;
     transition: all 0.3s ease;
+    line-height: 1;
 }
 
 .get-directions-btn:hover {
-    background: rgba(255, 254, 240, 0.95);
-    border-color: rgba(107, 68, 35, 0.5);
+    background: rgba(255, 254, 240, 1);
+    border-color: rgba(107, 68, 35, 0.6);
     color: rgba(107, 68, 35, 1);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(107, 68, 35, 0.15);
+    box-shadow: 0 4px 16px rgba(107, 68, 35, 0.2);
 }
 
 .get-directions-btn:hover .map-icon {
