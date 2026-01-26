@@ -706,20 +706,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const musicControlBtn = document.getElementById('music-control');
     let isPlaying = false;
     
-    // Start playing music after 2 seconds
+    // Start playing music after 3 seconds
     setTimeout(() => {
         if (backgroundMusic && musicControlBtn) {
             backgroundMusic.volume = 0.5; // Set volume to 50%
-            backgroundMusic.play().then(() => {
-                isPlaying = true;
-                musicControlBtn.classList.add('playing');
-            }).catch(error => {
-                console.log('Autoplay prevented. User interaction required.');
-                // If autoplay is prevented, wait for user interaction
-                isPlaying = false;
-            });
+            // Try to play the music
+            const playPromise = backgroundMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    isPlaying = true;
+                    musicControlBtn.classList.add('playing');
+                }).catch(error => {
+                    console.log('Autoplay prevented. User interaction required.');
+                    // If autoplay is prevented, try to enable it on first user interaction
+                    const enableAutoplay = () => {
+                        backgroundMusic.play().then(() => {
+                            isPlaying = true;
+                            musicControlBtn.classList.add('playing');
+                            document.removeEventListener('click', enableAutoplay);
+                            document.removeEventListener('touchstart', enableAutoplay);
+                        }).catch(() => {});
+                    };
+                    document.addEventListener('click', enableAutoplay, { once: true });
+                    document.addEventListener('touchstart', enableAutoplay, { once: true });
+                    isPlaying = false;
+                });
+            }
         }
-    }, 2000);
+    }, 3000);
     
     // Toggle play/pause on button click
     if (musicControlBtn) {
@@ -757,5 +772,43 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+    
+    // Stop music when page becomes hidden (minimized, tab switched, etc.)
+    document.addEventListener('visibilitychange', () => {
+        if (backgroundMusic && document.hidden) {
+            backgroundMusic.pause();
+            isPlaying = false;
+            if (musicControlBtn) {
+                musicControlBtn.classList.remove('playing');
+            }
+        }
+    });
+    
+    // Stop music when window loses focus (minimized)
+    window.addEventListener('blur', () => {
+        if (backgroundMusic && isPlaying) {
+            backgroundMusic.pause();
+            isPlaying = false;
+            if (musicControlBtn) {
+                musicControlBtn.classList.remove('playing');
+            }
+        }
+    });
+    
+    // Stop music when page is being closed
+    window.addEventListener('beforeunload', () => {
+        if (backgroundMusic) {
+            backgroundMusic.pause();
+            backgroundMusic.currentTime = 0;
+        }
+    });
+    
+    // Stop music when page is unloaded
+    window.addEventListener('pagehide', () => {
+        if (backgroundMusic) {
+            backgroundMusic.pause();
+            backgroundMusic.currentTime = 0;
+        }
+    });
 });
 
