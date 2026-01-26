@@ -651,59 +651,47 @@ body:not(.js-loaded) .ceremony-item {
 }
 
 .get-directions-btn {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     margin-top: 1.5rem;
-    padding: 0.5rem 0;
-    background: transparent;
-    border: none;
-    color: rgba(107, 68, 35, 0.7);
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 254, 240, 0.8);
+    border: 2px solid rgba(107, 68, 35, 0.3);
+    border-radius: 8px;
+    color: rgba(107, 68, 35, 0.85);
     font-family: 'Lato', sans-serif;
     font-size: 0.9rem;
-    font-weight: 400;
-    letter-spacing: 2px;
+    font-weight: 500;
+    letter-spacing: 1px;
     text-decoration: none;
-    text-transform: uppercase;
+    text-transform: none;
     transition: all 0.3s ease;
     cursor: pointer;
-    text-align: center;
     position: relative;
+    gap: 0.5rem;
+    backdrop-filter: blur(10px);
 }
 
 .map-icon {
     display: inline-block;
-    font-size: 1rem;
-    margin-right: 0.5rem;
-    filter: sepia(100%) saturate(200%) hue-rotate(15deg) brightness(0.7);
+    font-size: 1.1rem;
+    filter: sepia(100%) saturate(200%) hue-rotate(15deg) brightness(0.6);
     vertical-align: middle;
     transition: all 0.3s ease;
 }
 
-.get-directions-btn::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: linear-gradient(to right, 
-        rgba(107, 68, 35, 0.4) 0%, 
-        rgba(107, 68, 35, 0.2) 50%,
-        transparent 100%);
-    transition: width 0.4s ease;
-}
-
 .get-directions-btn:hover {
-    color: rgba(107, 68, 35, 0.9);
-    letter-spacing: 2.5px;
+    background: rgba(255, 254, 240, 0.95);
+    border-color: rgba(107, 68, 35, 0.5);
+    color: rgba(107, 68, 35, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(107, 68, 35, 0.15);
 }
 
 .get-directions-btn:hover .map-icon {
-    filter: sepia(100%) saturate(250%) hue-rotate(15deg) brightness(0.85);
-    transform: scale(1.1);
-}
-
-.get-directions-btn:hover::after {
-    width: 100%;
+    filter: sepia(100%) saturate(250%) hue-rotate(15deg) brightness(0.75);
+    transform: scale(1.05);
 }
 
 .ceremony-title {
@@ -1621,13 +1609,13 @@ html {
     
     .get-directions-btn {
         font-size: 0.85rem;
-        padding: 0.5rem 0;
+        padding: 0.65rem 1.2rem;
         margin-top: 1.2rem;
-        letter-spacing: 1.5px;
+        letter-spacing: 0.8px;
     }
     
-    .get-directions-btn:hover {
-        letter-spacing: 2px;
+    .map-icon {
+        font-size: 1rem;
     }
     
     .ceremony-date,
