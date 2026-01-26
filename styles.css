@@ -1169,7 +1169,7 @@ body:not(.js-loaded) .love-story-text {
     align-items: center;
     justify-content: center;
     gap: 2.5rem;
-    padding: 2rem 0;
+    padding: 1rem 0 2rem 0;
     min-height: auto;
 }
 
