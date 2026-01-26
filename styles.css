@@ -669,6 +669,15 @@ body:not(.js-loaded) .ceremony-item {
     position: relative;
 }
 
+.map-icon {
+    display: inline-block;
+    font-size: 1rem;
+    margin-right: 0.5rem;
+    filter: sepia(100%) saturate(200%) hue-rotate(15deg) brightness(0.7);
+    vertical-align: middle;
+    transition: all 0.3s ease;
+}
+
 .get-directions-btn::after {
     content: '';
     position: absolute;
@@ -686,6 +695,11 @@ body:not(.js-loaded) .ceremony-item {
 .get-directions-btn:hover {
     color: rgba(107, 68, 35, 0.9);
     letter-spacing: 2.5px;
+}
+
+.get-directions-btn:hover .map-icon {
+    filter: sepia(100%) saturate(250%) hue-rotate(15deg) brightness(0.85);
+    transform: scale(1.1);
 }
 
 .get-directions-btn:hover::after {
