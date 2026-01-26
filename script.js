@@ -191,30 +191,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Artistic photos - unique gallery layout
-    const artisticPhotoMain = document.querySelector('.artistic-photo-main');
+    const artisticPhotoMain = document.querySelectorAll('.artistic-photo-main');
     const artisticPhotosSmall = document.querySelectorAll('.artistic-photo-small');
-    const artisticDecorativeLeaf = document.querySelector('.artistic-decorative-leaf');
-    const allArtisticPhotos = [artisticPhotoMain, ...Array.from(artisticPhotosSmall)].filter(Boolean);
+    const artisticDecorativeLeaf = document.querySelectorAll('.artistic-decorative-leaf');
+    const allArtisticPhotos = [...Array.from(artisticPhotoMain), ...Array.from(artisticPhotosSmall)].filter(Boolean);
     
     // Animate photos with staggered effect
     function animateArtisticPhotos() {
-        // Animate decorative leaf first
-        if (artisticDecorativeLeaf) {
-            artisticDecorativeLeaf.classList.remove('animate');
-            void artisticDecorativeLeaf.offsetHeight;
-            setTimeout(() => {
-                artisticDecorativeLeaf.classList.add('animate');
-            }, 100);
-        }
+        // Animate decorative leaves first
+        artisticDecorativeLeaf.forEach((leaf, index) => {
+            if (leaf) {
+                leaf.classList.remove('animate');
+                void leaf.offsetHeight;
+                setTimeout(() => {
+                    leaf.classList.add('animate');
+                }, 100 + (index * 200));
+            }
+        });
         
-        // Animate main photo second
-        if (artisticPhotoMain) {
-            artisticPhotoMain.classList.remove('animate');
-            void artisticPhotoMain.offsetHeight;
-            setTimeout(() => {
-                artisticPhotoMain.classList.add('animate');
-            }, 300);
-        }
+        // Animate main photos second
+        artisticPhotoMain.forEach((photo, index) => {
+            if (photo) {
+                photo.classList.remove('animate');
+                void photo.offsetHeight;
+                setTimeout(() => {
+                    photo.classList.add('animate');
+                }, 300 + (index * 200));
+            }
+        });
         
         // Then animate small photos with staggered timing
         artisticPhotosSmall.forEach((photo, index) => {
@@ -233,9 +237,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 animateArtisticPhotos();
             } else {
                 // Fade out when leaving viewport
-                if (artisticDecorativeLeaf) {
-                    artisticDecorativeLeaf.classList.remove('animate');
-                }
+                artisticDecorativeLeaf.forEach(leaf => {
+                    if (leaf) leaf.classList.remove('animate');
+                });
                 allArtisticPhotos.forEach(photo => {
                     if (photo) photo.classList.remove('animate');
                 });
