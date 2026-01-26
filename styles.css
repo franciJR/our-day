@@ -154,7 +154,7 @@ body::before {
         repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.03) 0px, transparent 1px, transparent 2px, rgba(0, 0, 0, 0.03) 3px);
     background-size: 200% 200%;
     pointer-events: none;
-    z-index: 9999;
+    z-index: 1;
     opacity: 0.4;
     mix-blend-mode: overlay;
     animation: grain 8s steps(10) infinite;
@@ -1151,6 +1151,7 @@ body:not(.js-loaded) .love-story-text {
     position: relative;
     z-index: 2;
     overflow: hidden;
+    margin-bottom: 0;
 }
 
 .artistic-photos-wrapper {
@@ -1185,6 +1186,7 @@ body:not(.js-loaded) .love-story-text {
     transform: rotate(-12deg) scale(0.8);
     transition: opacity 1.5s ease-out, transform 1.5s ease-out;
     z-index: 1;
+    pointer-events: none;
 }
 
 .artistic-decorative-leaf.animate {
@@ -1369,9 +1371,10 @@ body:not(.js-loaded) .love-story-text {
 .footer {
     padding: 3rem 0;
     text-align: center;
-    background: rgba(255, 254, 240, 0.9);
-    backdrop-filter: blur(10px);
-    margin-top: 4rem;
+    background: var(--ivory-light);
+    margin-top: 0;
+    position: relative;
+    z-index: 2;
 }
 
 .footer-text {
