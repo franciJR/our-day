@@ -706,35 +706,76 @@ document.addEventListener('DOMContentLoaded', () => {
     const musicControlBtn = document.getElementById('music-control');
     let isPlaying = false;
     
-    // Start playing music after 3 seconds
-    setTimeout(() => {
+    // Function to start music
+    function startMusic() {
         if (backgroundMusic && musicControlBtn) {
+            // Ensure audio is loaded
+            if (backgroundMusic.readyState < 2) {
+                backgroundMusic.load();
+            }
+            
             backgroundMusic.volume = 0.5; // Set volume to 50%
-            // Try to play the music
             const playPromise = backgroundMusic.play();
             
             if (playPromise !== undefined) {
                 playPromise.then(() => {
                     isPlaying = true;
                     musicControlBtn.classList.add('playing');
+                    console.log('Music started successfully');
                 }).catch(error => {
-                    console.log('Autoplay prevented. User interaction required.');
-                    // If autoplay is prevented, try to enable it on first user interaction
-                    const enableAutoplay = () => {
-                        backgroundMusic.play().then(() => {
-                            isPlaying = true;
-                            musicControlBtn.classList.add('playing');
-                            document.removeEventListener('click', enableAutoplay);
-                            document.removeEventListener('touchstart', enableAutoplay);
-                        }).catch(() => {});
-                    };
-                    document.addEventListener('click', enableAutoplay, { once: true });
-                    document.addEventListener('touchstart', enableAutoplay, { once: true });
+                    console.log('Autoplay prevented:', error);
                     isPlaying = false;
                 });
             }
         }
-    }, 3000);
+    }
+    
+    // Set up autoplay handler for user interaction (if autoplay fails)
+    let autoplayHandler = null;
+    function setupAutoplayHandler() {
+        if (autoplayHandler) return; // Already set up
+        
+        autoplayHandler = () => {
+            if (backgroundMusic && backgroundMusic.paused && !isPlaying) {
+                startMusic();
+            }
+            // Remove listeners after first interaction
+            document.removeEventListener('click', autoplayHandler);
+            document.removeEventListener('touchstart', autoplayHandler);
+            document.removeEventListener('keydown', autoplayHandler);
+            document.removeEventListener('scroll', autoplayHandler);
+            autoplayHandler = null;
+        };
+        
+        document.addEventListener('click', autoplayHandler, { once: true });
+        document.addEventListener('touchstart', autoplayHandler, { once: true });
+        document.addEventListener('keydown', autoplayHandler, { once: true });
+        document.addEventListener('scroll', autoplayHandler, { once: true });
+    }
+    
+    // Wait for audio to be ready, then try to start music after 3 seconds
+    if (backgroundMusic) {
+        backgroundMusic.addEventListener('canplaythrough', () => {
+            setTimeout(() => {
+                startMusic();
+                
+                // If music didn't start, set up handler for user interaction
+                if (!isPlaying && backgroundMusic && backgroundMusic.paused) {
+                    setupAutoplayHandler();
+                }
+            }, 3000);
+        }, { once: true });
+        
+        // Fallback: try after 3 seconds even if canplaythrough hasn't fired
+        setTimeout(() => {
+            if (!isPlaying && backgroundMusic && backgroundMusic.paused) {
+                startMusic();
+                if (!isPlaying) {
+                    setupAutoplayHandler();
+                }
+            }
+        }, 3000);
+    }
     
     // Toggle play/pause on button click
     if (musicControlBtn) {
