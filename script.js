@@ -705,10 +705,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const backgroundMusic = document.getElementById('background-music');
     const musicControlBtn = document.getElementById('music-control');
     let isPlaying = false;
+    let musicStarted = false;
     
     // Function to start music
     function startMusic() {
-        if (backgroundMusic && musicControlBtn) {
+        if (backgroundMusic && musicControlBtn && !musicStarted) {
             // Ensure audio is loaded
             if (backgroundMusic.readyState < 2) {
                 backgroundMusic.load();
@@ -720,61 +721,37 @@ document.addEventListener('DOMContentLoaded', () => {
             if (playPromise !== undefined) {
                 playPromise.then(() => {
                     isPlaying = true;
+                    musicStarted = true;
                     musicControlBtn.classList.add('playing');
                     console.log('Music started successfully');
                 }).catch(error => {
-                    console.log('Autoplay prevented:', error);
+                    console.log('Play failed:', error);
                     isPlaying = false;
                 });
             }
         }
     }
     
-    // Set up autoplay handler for user interaction (if autoplay fails)
-    let autoplayHandler = null;
-    function setupAutoplayHandler() {
-        if (autoplayHandler) return; // Already set up
-        
-        autoplayHandler = () => {
-            if (backgroundMusic && backgroundMusic.paused && !isPlaying) {
+    // Start music when user starts scrolling
+    if (backgroundMusic) {
+        const scrollHandler = () => {
+            if (!musicStarted && backgroundMusic && backgroundMusic.paused) {
                 startMusic();
             }
-            // Remove listeners after first interaction
-            document.removeEventListener('click', autoplayHandler);
-            document.removeEventListener('touchstart', autoplayHandler);
-            document.removeEventListener('keydown', autoplayHandler);
-            document.removeEventListener('scroll', autoplayHandler);
-            autoplayHandler = null;
         };
         
-        document.addEventListener('click', autoplayHandler, { once: true });
-        document.addEventListener('touchstart', autoplayHandler, { once: true });
-        document.addEventListener('keydown', autoplayHandler, { once: true });
-        document.addEventListener('scroll', autoplayHandler, { once: true });
-    }
-    
-    // Wait for audio to be ready, then try to start music after 3 seconds
-    if (backgroundMusic) {
-        backgroundMusic.addEventListener('canplaythrough', () => {
-            setTimeout(() => {
-                startMusic();
-                
-                // If music didn't start, set up handler for user interaction
-                if (!isPlaying && backgroundMusic && backgroundMusic.paused) {
-                    setupAutoplayHandler();
-                }
-            }, 3000);
-        }, { once: true });
+        // Listen for scroll events - start music on first scroll
+        window.addEventListener('scroll', scrollHandler, { once: true, passive: true });
         
-        // Fallback: try after 3 seconds even if canplaythrough hasn't fired
-        setTimeout(() => {
-            if (!isPlaying && backgroundMusic && backgroundMusic.paused) {
+        // Also try to start on other user interactions as backup
+        const interactionHandler = () => {
+            if (!musicStarted && backgroundMusic && backgroundMusic.paused) {
                 startMusic();
-                if (!isPlaying) {
-                    setupAutoplayHandler();
-                }
             }
-        }, 3000);
+        };
+        
+        document.addEventListener('click', interactionHandler, { once: true });
+        document.addEventListener('touchstart', interactionHandler, { once: true });
     }
     
     // Toggle play/pause on button click
