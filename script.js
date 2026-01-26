@@ -832,5 +832,272 @@ document.addEventListener('DOMContentLoaded', () => {
             backgroundMusic.currentTime = 0;
         }
     });
+    
+    // Wishes Section Functionality
+    initializeWishes();
 });
+
+// Wishes Section Functionality
+function initializeWishes() {
+    const wishButton = document.getElementById('wishButton');
+    const wishModal = document.getElementById('wishModal');
+    const wishModalClose = document.querySelector('.wish-modal-close');
+    const wishForm = document.getElementById('wishForm');
+    const wishesSlideshow = document.getElementById('wishesSlideshow');
+    const wishPrev = document.getElementById('wishPrev');
+    const wishNext = document.getElementById('wishNext');
+    const wishIndicators = document.getElementById('wishIndicators');
+    
+    // Load wishes from localStorage
+    let wishes = JSON.parse(localStorage.getItem('weddingWishes')) || [];
+    let currentWishIndex = 0;
+    let wishInterval = null;
+    
+    // Initialize wishes display
+    function loadWishes() {
+        if (wishes.length === 0) {
+            // Show default sample wish if no wishes exist
+            wishes = [{
+                name: 'Sample Wish',
+                message: 'May your love story be as beautiful as your wedding day. Wishing you both a lifetime of happiness and joy together. ❤️',
+                date: new Date().toISOString()
+            }];
+        }
+        renderWishes();
+        updateIndicators();
+        startSlideshow();
+    }
+    
+    // Render wishes in slideshow
+    function renderWishes() {
+        wishesSlideshow.innerHTML = '';
+        wishes.forEach((wish, index) => {
+            const slide = document.createElement('div');
+            slide.className = `wish-slide ${index === currentWishIndex ? 'active' : ''}`;
+            slide.innerHTML = `
+                <div class="wish-card">
+                    <p class="wish-message">${escapeHtml(wish.message)}</p>
+                    <p class="wish-author">— ${escapeHtml(wish.name)}</p>
+                </div>
+            `;
+            wishesSlideshow.appendChild(slide);
+        });
+    }
+    
+    // Update indicators
+    function updateIndicators() {
+        wishIndicators.innerHTML = '';
+        wishes.forEach((_, index) => {
+            const indicator = document.createElement('div');
+            indicator.className = `wish-indicator ${index === currentWishIndex ? 'active' : ''}`;
+            indicator.addEventListener('click', () => goToWish(index));
+            wishIndicators.appendChild(indicator);
+        });
+    }
+    
+    // Escape HTML to prevent XSS
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    // Show specific wish
+    function showWish(index) {
+        if (index < 0) index = wishes.length - 1;
+        if (index >= wishes.length) index = 0;
+        
+        currentWishIndex = index;
+        
+        const slides = document.querySelectorAll('.wish-slide');
+        const indicators = document.querySelectorAll('.wish-indicator');
+        
+        slides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === index);
+        });
+        
+        indicators.forEach((indicator, i) => {
+            indicator.classList.toggle('active', i === index);
+        });
+        
+        resetSlideshow();
+    }
+    
+    // Navigate to next wish
+    function nextWish() {
+        showWish(currentWishIndex + 1);
+    }
+    
+    // Navigate to previous wish
+    function prevWish() {
+        showWish(currentWishIndex - 1);
+    }
+    
+    // Go to specific wish
+    function goToWish(index) {
+        showWish(index);
+    }
+    
+    // Start automatic slideshow
+    function startSlideshow() {
+        if (wishInterval) clearInterval(wishInterval);
+        if (wishes.length <= 1) return;
+        
+        wishInterval = setInterval(() => {
+            nextWish();
+        }, 5000); // Change wish every 5 seconds
+    }
+    
+    // Reset slideshow timer
+    function resetSlideshow() {
+        startSlideshow();
+    }
+    
+    // Open wish modal
+    function openWishModal() {
+        wishModal.style.display = 'flex';
+        void wishModal.offsetHeight; // Force reflow
+        setTimeout(() => {
+            wishModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }, 10);
+    }
+    
+    // Close wish modal
+    function closeWishModal() {
+        wishModal.classList.remove('active');
+        setTimeout(() => {
+            wishModal.style.display = 'none';
+            document.body.style.overflow = '';
+            wishForm.reset();
+        }, 400);
+    }
+    
+    // Handle form submission
+    if (wishForm) {
+        wishForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('wishName').value.trim();
+            const message = document.getElementById('wishMessage').value.trim();
+            
+            if (!name || !message) {
+                alert('Please fill in all fields.');
+                return;
+            }
+            
+            // Add new wish
+            const newWish = {
+                name: name,
+                message: message,
+                date: new Date().toISOString()
+            };
+            
+            // Remove sample wish if it exists and this is the first real wish
+            if (wishes.length === 1 && wishes[0].name === 'Sample Wish') {
+                wishes = [];
+            }
+            
+            wishes.push(newWish);
+            localStorage.setItem('weddingWishes', JSON.stringify(wishes));
+            
+            // Update display
+            currentWishIndex = wishes.length - 1;
+            renderWishes();
+            updateIndicators();
+            showWish(currentWishIndex);
+            
+            // Close modal and show success message
+            closeWishModal();
+            
+            // Show thank you message
+            const thankYouMsg = document.createElement('div');
+            thankYouMsg.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(107, 68, 35, 0.95);
+                color: #FFFEF0;
+                padding: 2rem 3rem;
+                border-radius: 15px;
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 1.3rem;
+                z-index: 4000;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+                text-align: center;
+            `;
+            thankYouMsg.innerHTML = 'Thank you for your beautiful wish! ❦';
+            document.body.appendChild(thankYouMsg);
+            
+            setTimeout(() => {
+                thankYouMsg.style.opacity = '0';
+                thankYouMsg.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => {
+                    document.body.removeChild(thankYouMsg);
+                }, 500);
+            }, 2000);
+        });
+    }
+    
+    // Event listeners
+    if (wishButton) {
+        wishButton.addEventListener('click', openWishModal);
+    }
+    
+    if (wishModalClose) {
+        wishModalClose.addEventListener('click', closeWishModal);
+    }
+    
+    if (wishModal) {
+        wishModal.addEventListener('click', (e) => {
+            if (e.target === wishModal) {
+                closeWishModal();
+            }
+        });
+    }
+    
+    if (wishPrev) {
+        wishPrev.addEventListener('click', () => {
+            prevWish();
+        });
+    }
+    
+    if (wishNext) {
+        wishNext.addEventListener('click', () => {
+            nextWish();
+        });
+    }
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (wishModal.classList.contains('active')) {
+            if (e.key === 'Escape') {
+                closeWishModal();
+            }
+        } else {
+            // Only allow arrow navigation when modal is not open
+            if (e.key === 'ArrowLeft') {
+                prevWish();
+            } else if (e.key === 'ArrowRight') {
+                nextWish();
+            }
+        }
+    });
+    
+    // Pause slideshow on hover
+    const slideshowContainer = document.querySelector('.wishes-slideshow-container');
+    if (slideshowContainer) {
+        slideshowContainer.addEventListener('mouseenter', () => {
+            if (wishInterval) clearInterval(wishInterval);
+        });
+        
+        slideshowContainer.addEventListener('mouseleave', () => {
+            startSlideshow();
+        });
+    }
+    
+    // Initialize on load
+    loadWishes();
+}
 

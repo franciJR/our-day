@@ -200,6 +200,42 @@
         </div>
     </section>
 
+    <!-- Wishes Section -->
+    <section id="wishes" class="wishes-section">
+        <div class="container">
+            <h2 class="section-title wishes-title">Your Wishes</h2>
+            <p class="wishes-subtitle">Share your blessings and warm wishes for our journey together</p>
+            
+            <button class="wish-button" id="wishButton">
+                <span class="wish-icon">❦</span>
+                <span class="wish-text">Wish the Couple</span>
+            </button>
+            
+            <!-- Wishes Slideshow -->
+            <div class="wishes-slideshow-container">
+                <div class="wishes-slideshow" id="wishesSlideshow">
+                    <div class="wish-slide active">
+                        <div class="wish-card">
+                            <p class="wish-message">"May your love story be as beautiful as your wedding day. Wishing you both a lifetime of happiness and joy together. ❤️"</p>
+                            <p class="wish-author">— Sample Wish</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slideshow Navigation -->
+                <button class="wish-nav-btn wish-prev" id="wishPrev" aria-label="Previous wish">
+                    <span>‹</span>
+                </button>
+                <button class="wish-nav-btn wish-next" id="wishNext" aria-label="Next wish">
+                    <span>›</span>
+                </button>
+                
+                <!-- Slideshow Indicators -->
+                <div class="wish-indicators" id="wishIndicators"></div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -212,6 +248,29 @@
         <span class="modal-close">&times;</span>
         <img class="modal-content" id="modalImage" src="" alt="Full size photo">
         <div class="modal-caption" id="modalCaption"></div>
+    </div>
+
+    <!-- Wish Submission Modal -->
+    <div id="wishModal" class="wish-modal">
+        <div class="wish-modal-content">
+            <span class="wish-modal-close">&times;</span>
+            <h3 class="wish-modal-title">Share Your Wishes</h3>
+            <p class="wish-modal-subtitle">Your kind words mean the world to us</p>
+            <form id="wishForm" class="wish-form">
+                <div class="form-group">
+                    <label for="wishName">Your Name</label>
+                    <input type="text" id="wishName" name="name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="wishMessage">Your Message</label>
+                    <textarea id="wishMessage" name="message" rows="5" placeholder="Share your warm wishes and blessings..." required></textarea>
+                </div>
+                <button type="submit" class="wish-submit-btn">
+                    <span>Send Your Wish</span>
+                    <span class="wish-heart">❦</span>
+                </button>
+            </form>
+        </div>
     </div>
 
     <script src="script.js"></script>
