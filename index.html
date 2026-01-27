@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <title>Our Wedding</title>
-    <link rel="stylesheet" href="styles.css" id="main-stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&family=Great+Vibes&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Bellefair&family=Dancing+Script:wght@400;500;600;700&family=Allura&family=EB+Garamond:wght@400;500;600;700&family=IM+Fell+English&family=Cormorant+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -276,117 +273,6 @@
     </div>
 
     <script src="script.js"></script>
-    <script>
-        // Auto-update checker and cache-busting system
-        (function() {
-            const VERSION_KEY = 'wedding_site_version';
-            const CHECK_INTERVAL = 45000; // Check every 45 seconds
-            const CHECK_ON_VISIBLE = true;
-            let isChecking = false;
-            
-            // Store current page load time as version
-            const currentLoadTime = new Date().getTime();
-            const pageVersion = document.lastModified || currentLoadTime.toString();
-            
-            // Initialize version on first load
-            if (!localStorage.getItem(VERSION_KEY)) {
-                localStorage.setItem(VERSION_KEY, pageVersion);
-            }
-            
-            // Check for updates by comparing file modification
-            async function checkForUpdates() {
-                if (isChecking) return;
-                isChecking = true;
-                
-                try {
-                    // Fetch HTML with cache-busting
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
-                    
-                    const response = await fetch(window.location.href + '?check=' + Date.now(), {
-                        method: 'GET',
-                        cache: 'no-store',
-                        signal: controller.signal,
-                        headers: {
-                            'Cache-Control': 'no-cache, no-store, must-revalidate',
-                            'Pragma': 'no-cache'
-                        }
-                    });
-                    
-                    clearTimeout(timeoutId);
-                    
-                    if (!response.ok) {
-                        isChecking = false;
-                        return;
-                    }
-                    
-                    const htmlText = await response.text();
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(htmlText, 'text/html');
-                    
-                    // Compare lastModified
-                    const fetchedLastModified = doc.lastModified || '';
-                    const currentLastModified = document.lastModified || '';
-                    const storedVersion = localStorage.getItem(VERSION_KEY);
-                    
-                    // If lastModified changed, refresh
-                    if (fetchedLastModified && fetchedLastModified !== currentLastModified && fetchedLastModified !== storedVersion) {
-                        console.log('Page update detected! Refreshing...');
-                        localStorage.setItem(VERSION_KEY, fetchedLastModified);
-                        setTimeout(() => {
-                            window.location.reload(true);
-                        }, 800);
-                        isChecking = false;
-                        return;
-                    }
-                } catch (error) {
-                    // Network errors are expected sometimes - don't break the page
-                    if (error.name !== 'AbortError') {
-                        console.log('Update check:', error.message);
-                    }
-                }
-                
-                isChecking = false;
-            }
-            
-            // Periodic update check
-            setInterval(checkForUpdates, CHECK_INTERVAL);
-            
-            // Check when page becomes visible
-            if (CHECK_ON_VISIBLE) {
-                document.addEventListener('visibilitychange', () => {
-                    if (!document.hidden) {
-                        setTimeout(checkForUpdates, 2000);
-                    }
-                });
-            }
-            
-            // Check on page load
-            window.addEventListener('load', () => {
-                setTimeout(checkForUpdates, 4000);
-            });
-            
-            // Force cache-busting for CSS files
-            window.addEventListener('load', () => {
-                const timestamp = Date.now();
-                
-                // Update CSS links to bypass cache
-                document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
-                    const href = link.href.split('?')[0];
-                    if (!link.href.includes('?v=')) {
-                        link.href = href + '?v=' + timestamp;
-                    }
-                });
-            });
-            
-            // Prevent aggressive caching
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.getRegistrations().then(registrations => {
-                    registrations.forEach(registration => registration.unregister());
-                });
-            }
-        })();
-    </script>
 </body>
 </html>
 
