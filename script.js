@@ -848,21 +848,86 @@ function initializeWishes() {
     const wishNext = document.getElementById('wishNext');
     const wishIndicators = document.getElementById('wishIndicators');
     
-    // Load wishes from localStorage
-    let wishes = JSON.parse(localStorage.getItem('weddingWishes')) || [];
+    // Shared wishes storage - API endpoint
+    // Replace this URL with your backend API endpoint
+    // For example: 'https://yourdomain.com/api/wishes' or use a service like Firebase
+    const WISHES_API_URL = 'api/wishes.php'; // Change this to your API endpoint
+    
+    let wishes = [];
     let currentWishIndex = 0;
     let wishInterval = null;
+    let isLoading = false;
     
-    // Initialize wishes display
-    function loadWishes() {
+    // Load wishes from shared API
+    async function loadWishes() {
+        if (isLoading) return;
+        isLoading = true;
+        
+        try {
+            // Try to fetch from API
+            const response = await fetch(WISHES_API_URL + '?action=get&t=' + Date.now(), {
+                method: 'GET',
+                cache: 'no-cache',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success && Array.isArray(data.wishes)) {
+                    wishes = data.wishes.filter(wish => wish && wish.message && wish.message.trim());
+                    
+                    // Sort by date (newest first)
+                    wishes.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    
+                    console.log('Loaded wishes from API:', wishes.length);
+                } else {
+                    throw new Error('Invalid response format');
+                }
+            } else {
+                throw new Error('API request failed');
+            }
+        } catch (error) {
+            console.log('API not available, using localStorage fallback:', error.message);
+            
+            // Fallback to localStorage
+            try {
+                const storedWishes = localStorage.getItem('weddingWishes');
+                if (storedWishes) {
+                    wishes = JSON.parse(storedWishes);
+                    wishes = wishes.filter(wish => wish && wish.message && wish.message.trim());
+                }
+            } catch (localError) {
+                console.error('Error loading from localStorage:', localError);
+                wishes = [];
+            }
+        }
+        
+        // Show sample wish if no real wishes exist
         if (wishes.length === 0) {
-            // Show default sample wish if no wishes exist
             wishes = [{
                 name: '',
                 message: 'May your love story be as beautiful as your wedding day. Wishing you both a lifetime of happiness and joy together. ❤️',
                 date: new Date().toISOString()
             }];
+        } else {
+            // Remove any sample wishes
+            wishes = wishes.filter(wish => 
+                wish.name !== '' && 
+                wish.message !== 'May your love story be as beautiful as your wedding day. Wishing you both a lifetime of happiness and joy together. ❤️'
+            );
+            
+            if (wishes.length === 0) {
+                wishes = [{
+                    name: '',
+                    message: 'May your love story be as beautiful as your wedding day. Wishing you both a lifetime of happiness and joy together. ❤️',
+                    date: new Date().toISOString()
+                }];
+            }
         }
+        
+        isLoading = false;
         renderWishes();
         updateIndicators();
         startSlideshow();
@@ -976,7 +1041,7 @@ function initializeWishes() {
     
     // Handle form submission
     if (wishForm) {
-        wishForm.addEventListener('submit', (e) => {
+        wishForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const name = document.getElementById('wishName').value.trim();
@@ -987,6 +1052,12 @@ function initializeWishes() {
                 return;
             }
             
+            // Disable form while saving
+            const submitBtn = wishForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Saving...';
+            
             // Add new wish
             const newWish = {
                 name: name,
@@ -994,19 +1065,58 @@ function initializeWishes() {
                 date: new Date().toISOString()
             };
             
-            // Remove sample wish if it exists and this is the first real wish
-            if (wishes.length === 1 && wishes[0].name === '') {
-                wishes = [];
+            try {
+                const response = await fetch(WISHES_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: 'add',
+                        wish: newWish
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        // Reload all wishes from API to get the updated list
+                        await loadWishes();
+                        currentWishIndex = 0; // Show newest wish first
+                        showWish(currentWishIndex);
+                        console.log('Wish saved to API successfully');
+                    } else {
+                        throw new Error(data.error || 'Failed to save wish');
+                    }
+                } else {
+                    throw new Error('API request failed');
+                }
+            } catch (error) {
+                console.log('API not available, saving to localStorage:', error.message);
+                
+                // Fallback to localStorage
+                wishes.push(newWish);
+                try {
+                    localStorage.setItem('weddingWishes', JSON.stringify(wishes));
+                    console.log('Wish saved to localStorage:', newWish);
+                    
+                    // Update display
+                    currentWishIndex = wishes.length - 1;
+                    renderWishes();
+                    updateIndicators();
+                    showWish(currentWishIndex);
+                } catch (localError) {
+                    console.error('Error saving wish:', localError);
+                    alert('There was an error saving your wish. Please try again.');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                    return;
+                }
             }
             
-            wishes.push(newWish);
-            localStorage.setItem('weddingWishes', JSON.stringify(wishes));
-            
-            // Update display
-            currentWishIndex = wishes.length - 1;
-            renderWishes();
-            updateIndicators();
-            showWish(currentWishIndex);
+            // Re-enable form
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
             
             // Close modal and show success message
             closeWishModal();
@@ -1100,5 +1210,30 @@ function initializeWishes() {
     
     // Initialize on load
     loadWishes();
+    
+    // Periodically refresh wishes to get new ones from other users
+    setInterval(() => {
+        loadWishes();
+    }, 30000); // Check every 30 seconds for new wishes
+    
+    // Refresh when page becomes visible
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            loadWishes();
+        }
+    });
+    
+    // Add a helper function to check wishes (for debugging)
+    window.checkWishes = function() {
+        console.log('Current wishes array:', wishes);
+        console.log('Current wish index:', currentWishIndex);
+        return wishes;
+    };
+    
+    // Add a helper to reload wishes
+    window.reloadWishes = function() {
+        loadWishes();
+        console.log('Wishes reloaded');
+    };
 }
 
