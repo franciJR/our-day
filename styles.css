@@ -960,7 +960,7 @@ body:not(.js-loaded) .ceremony-item {
 
 /* Story Section */
 .story-section {
-    padding: 6rem 0 4rem 0;
+    padding: 6rem 0 2rem 0;
     position: relative;
     background: var(--ivory-light);
     z-index: 2;
@@ -1146,7 +1146,7 @@ body:not(.js-loaded) .love-story-text {
 /* Footer */
 /* Artistic Photos Section - Compact Gallery Layout */
 .artistic-photos-section {
-    padding: 4rem 0 6rem 0;
+    padding: 2rem 0 6rem 0;
     background: var(--ivory-light);
     position: relative;
     z-index: 2;
@@ -2067,7 +2067,7 @@ html {
     
     /* Artistic Photos Section */
     .artistic-photos-section {
-        padding: 3rem 0 4rem 0;
+        padding: 1.5rem 0 4rem 0;
     }
     
     .artistic-photos-wrapper {
@@ -2217,7 +2217,7 @@ html {
     
     /* Story Section */
     .story-section {
-        padding: 4rem 0 3rem 0;
+        padding: 4rem 0 1.5rem 0;
     }
     
     .story-content {
@@ -2565,7 +2565,7 @@ html {
     
     /* Story Section */
     .story-section {
-        padding: 3rem 0 2.5rem 0;
+        padding: 3rem 0 1rem 0;
     }
     
     .story-content {
@@ -2596,7 +2596,7 @@ html {
     
     /* Artistic Photos Section - Mobile */
     .artistic-photos-section {
-        padding: 2.5rem 0 4rem 0;
+        padding: 1rem 0 4rem 0;
         min-height: 600px;
     }
     
