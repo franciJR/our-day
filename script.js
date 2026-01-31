@@ -848,61 +848,95 @@ function initializeWishes() {
     const wishNext = document.getElementById('wishNext');
     const wishIndicators = document.getElementById('wishIndicators');
     
-    // Shared wishes storage - API endpoint
-    // Replace this URL with your backend API endpoint
-    // For example: 'https://yourdomain.com/api/wishes' or use a service like Firebase
-    const WISHES_API_URL = 'api/wishes.php'; // Change this to your API endpoint
-    
+    // Firebase Firestore for wishes storage
+    // Make sure Firebase is initialized (check firebase-config.js)
     let wishes = [];
     let currentWishIndex = 0;
     let wishInterval = null;
     let isLoading = false;
+    let firestoreUnsubscribe = null;
     
-    // Load wishes from shared API
+    // Check if Firebase is available
+    function isFirebaseAvailable() {
+        return typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0;
+    }
+    
+    // Get Firestore reference
+    function getFirestore() {
+        if (!isFirebaseAvailable()) {
+            return null;
+        }
+        return firebase.firestore();
+    }
+    
+    // Load wishes from Firebase Firestore
     async function loadWishes() {
         if (isLoading) return;
         isLoading = true;
         
-        try {
-            // Try to fetch from API
-            const response = await fetch(WISHES_API_URL + '?action=get&t=' + Date.now(), {
-                method: 'GET',
-                cache: 'no-cache',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            
-            if (response.ok) {
-                const data = await response.json();
-                if (data.success && Array.isArray(data.wishes)) {
-                    wishes = data.wishes.filter(wish => wish && wish.message && wish.message.trim());
-                    
-                    // Sort by date (newest first)
-                    wishes.sort((a, b) => new Date(b.date) - new Date(a.date));
-                    
-                    console.log('Loaded wishes from API:', wishes.length);
-                } else {
-                    throw new Error('Invalid response format');
-                }
-            } else {
-                throw new Error('API request failed');
-            }
-        } catch (error) {
-            console.log('API not available, using localStorage fallback:', error.message);
-            
-            // Fallback to localStorage
+        const db = getFirestore();
+        
+        if (db) {
             try {
-                const storedWishes = localStorage.getItem('weddingWishes');
-                if (storedWishes) {
-                    wishes = JSON.parse(storedWishes);
-                    wishes = wishes.filter(wish => wish && wish.message && wish.message.trim());
+                // Set up real-time listener for wishes
+                if (firestoreUnsubscribe) {
+                    firestoreUnsubscribe(); // Unsubscribe from previous listener
                 }
-            } catch (localError) {
-                console.error('Error loading from localStorage:', localError);
-                wishes = [];
+                
+                firestoreUnsubscribe = db.collection('wishes')
+                    .orderBy('date', 'desc')
+                    .onSnapshot((snapshot) => {
+                        wishes = [];
+                        snapshot.forEach((doc) => {
+                            const data = doc.data();
+                            if (data.message && data.message.trim()) {
+                                wishes.push({
+                                    id: doc.id,
+                                    name: data.name || '',
+                                    message: data.message,
+                                    date: data.date || new Date().toISOString()
+                                });
+                            }
+                        });
+                        
+                        console.log('Loaded wishes from Firestore:', wishes.length);
+                        processWishes();
+                    }, (error) => {
+                        console.error('Firestore error:', error);
+                        loadWishesFallback();
+                    });
+                
+                isLoading = false;
+                return;
+            } catch (error) {
+                console.error('Error loading from Firestore:', error);
+                loadWishesFallback();
             }
+        } else {
+            console.log('Firebase not available, using localStorage fallback');
+            loadWishesFallback();
         }
+    }
+    
+    // Fallback to localStorage if Firebase is not available
+    function loadWishesFallback() {
+        try {
+            const storedWishes = localStorage.getItem('weddingWishes');
+            if (storedWishes) {
+                wishes = JSON.parse(storedWishes);
+                wishes = wishes.filter(wish => wish && wish.message && wish.message.trim());
+                // Sort by date (newest first)
+                wishes.sort((a, b) => new Date(b.date) - new Date(a.date));
+            }
+        } catch (localError) {
+            console.error('Error loading from localStorage:', localError);
+            wishes = [];
+        }
+        processWishes();
+    }
+    
+    // Process wishes (show sample if empty, etc.)
+    function processWishes() {
         
         // Show sample wish if no real wishes exist
         if (wishes.length === 0) {
@@ -1039,6 +1073,61 @@ function initializeWishes() {
         }, 400);
     }
     
+    // Helper function to save wish to localStorage (fallback)
+    function saveWishToLocalStorage(newWish, submitBtn, originalText) {
+        wishes.push(newWish);
+        try {
+            localStorage.setItem('weddingWishes', JSON.stringify(wishes));
+            console.log('Wish saved to localStorage:', newWish);
+            
+            // Update display
+            currentWishIndex = wishes.length - 1;
+            renderWishes();
+            updateIndicators();
+            showWish(currentWishIndex);
+            
+            // Re-enable form
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+            
+            // Close modal and show success message
+            closeWishModal();
+            
+            // Show thank you message
+            const thankYouMsg = document.createElement('div');
+            thankYouMsg.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(107, 68, 35, 0.95);
+                color: #FFFEF0;
+                padding: 2rem 3rem;
+                border-radius: 15px;
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 1.3rem;
+                z-index: 4000;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+                text-align: center;
+            `;
+            thankYouMsg.innerHTML = 'Thank you for your beautiful wish! ❦';
+            document.body.appendChild(thankYouMsg);
+            
+            setTimeout(() => {
+                thankYouMsg.style.opacity = '0';
+                thankYouMsg.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => {
+                    document.body.removeChild(thankYouMsg);
+                }, 500);
+            }, 2000);
+        } catch (localError) {
+            console.error('Error saving wish:', localError);
+            alert('There was an error saving your wish. Please try again.');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+        }
+    }
+    
     // Handle form submission
     if (wishForm) {
         wishForm.addEventListener('submit', async (e) => {
@@ -1060,58 +1149,34 @@ function initializeWishes() {
             
             // Add new wish
             const newWish = {
-                name: name,
-                message: message,
+                name: name.trim(),
+                message: message.trim(),
                 date: new Date().toISOString()
             };
             
-            try {
-                const response = await fetch(WISHES_API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        action: 'add',
-                        wish: newWish
-                    })
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success) {
-                        // Reload all wishes from API to get the updated list
-                        await loadWishes();
-                        currentWishIndex = 0; // Show newest wish first
-                        showWish(currentWishIndex);
-                        console.log('Wish saved to API successfully');
-                    } else {
-                        throw new Error(data.error || 'Failed to save wish');
-                    }
-                } else {
-                    throw new Error('API request failed');
-                }
-            } catch (error) {
-                console.log('API not available, saving to localStorage:', error.message);
-                
-                // Fallback to localStorage
-                wishes.push(newWish);
+            const db = getFirestore();
+            
+            if (db) {
+                // Save to Firebase Firestore
                 try {
-                    localStorage.setItem('weddingWishes', JSON.stringify(wishes));
-                    console.log('Wish saved to localStorage:', newWish);
+                    await db.collection('wishes').add(newWish);
+                    console.log('Wish saved to Firestore successfully');
                     
-                    // Update display
-                    currentWishIndex = wishes.length - 1;
-                    renderWishes();
-                    updateIndicators();
+                    // The real-time listener will automatically update the display
+                    // But we can show the newest wish immediately
+                    currentWishIndex = 0;
                     showWish(currentWishIndex);
-                } catch (localError) {
-                    console.error('Error saving wish:', localError);
-                    alert('There was an error saving your wish. Please try again.');
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalText;
+                } catch (error) {
+                    console.error('Error saving to Firestore:', error);
+                    // Fallback to localStorage
+                    saveWishToLocalStorage(newWish, submitBtn, originalText);
                     return;
                 }
+            } else {
+                // Fallback to localStorage if Firebase is not available
+                console.log('Firebase not available, saving to localStorage');
+                saveWishToLocalStorage(newWish, submitBtn, originalText);
+                return;
             }
             
             // Re-enable form
